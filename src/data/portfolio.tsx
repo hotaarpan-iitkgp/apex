@@ -16,6 +16,7 @@ import {
   Battery,
   Grid
 } from 'lucide-react';
+import profilePhoto from '@/assets/Arpan_hota.png';
 
 export const profile = {
   name: "Arpan Hota",
@@ -30,7 +31,7 @@ export const profile = {
   cvLink: "/cv.pdf", // Placeholder
   iitkgpHeroImage: "https://upload.wikimedia.org/wikipedia/commons/d/df/IIT_Kharagpur_Main_Building.JPG",
   iitkgpHeroImageSecondary: "https://upload.wikimedia.org/wikipedia/commons/7/79/Indian_Institute_of_Kharagpur_Main_Building.jpg",
-  profileImage: "/Arpan_hota.png",
+  profileImage: profilePhoto,
   bio: "I am an Assistant Professor in the Department of Electrical Engineering at IIT Kharagpur. My research interests include Multilevel Inverters, Electric Vehicles, PWM techniques, and Dual Active Bridge Converters. I have industry experience as a Senior Design Engineer at Schneider Electric and Senior Engineer at FEV India.",
   shortBio: "Assistant Professor at IIT Kharagpur specializing in Power Electronics, EV Powertrains, and Multilevel Inverters.",
   stats: {

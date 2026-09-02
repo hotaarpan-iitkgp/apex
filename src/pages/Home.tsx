@@ -133,22 +133,18 @@ export default function Home() {
                 
                 <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-white dark:bg-slate-900 shadow-xl border-4 border-white dark:border-slate-800 ring-2 ring-slate-200 dark:ring-slate-700 group">
                   <img 
-                    src={profile.profileImage || "/Arpan_hota.png"} 
+                    src={profile.profileImage} 
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      if (!target.dataset.triedSecond) {
-                        target.dataset.triedSecond = "true";
-                        target.src = "/arpan_hota.jpg";
-                      } else {
-                        target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800";
+                      if (!target.dataset.triedPublic) {
+                        target.dataset.triedPublic = "true";
+                        target.src = "./Arpan_hota.png";
                       }
                     }}
                     alt={`Dr. ${profile.name}`} 
                     className="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 filter brightness-95 contrast-105"
                     referrerPolicy="no-referrer"
                   />
-                  
-
                 </div>
               </div>
             </motion.div>
