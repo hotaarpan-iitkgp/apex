@@ -39,9 +39,9 @@ export default function Navbar() {
       if (savedTheme) {
         return savedTheme;
       }
-      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      return 'dark';
     }
-    return 'light';
+    return 'dark';
   });
 
   useEffect(() => {

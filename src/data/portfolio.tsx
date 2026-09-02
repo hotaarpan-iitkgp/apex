@@ -20,7 +20,7 @@ import profilePhoto from '@/assets/Arpan_hota.png';
 
 export const profile = {
   name: "Arpan Hota",
-  title: "Assistant Professor - Grade II",
+  title: "Assistant Professor",
   department: "Department of Electrical Engineering",
   institution: "IIT Kharagpur",
   location: "Kharagpur, West Bengal, India",
@@ -302,7 +302,7 @@ export const education = [
 
 export const experience = [
   {
-    role: "Assistant Professor - Grade II",
+    role: "Assistant Professor",
     institution: "IIT Kharagpur",
     location: "Kharagpur, India",
     year: "2025 - Present",
@@ -805,6 +805,322 @@ export const pedagogicalApps: PedagogicalApp[] = [
     ],
     suggestedCourses: ["EE101", "Electromagnetic Fields & Waves", "Physics"],
     color: "from-purple-600 to-pink-700"
+  }
+];
+
+export interface VideoLecture {
+  id: string;
+  title: string;
+  url: string;
+  videoId: string;
+}
+
+export interface LectureModule {
+  moduleNumber: number | string;
+  moduleTitle: string;
+  videos: VideoLecture[];
+}
+
+export interface CourseVideoSeries {
+  courseCode: string;
+  courseTitle: string;
+  level: string;
+  description: string;
+  modules: LectureModule[];
+}
+
+export const courseVideoSeries: CourseVideoSeries[] = [
+  {
+    courseCode: "EE60208",
+    courseTitle: "Multilevel Converters: Analysis and Control",
+    level: "Postgraduate / Advanced Elective",
+    description: "Comprehensive recorded lecture series covering multi-level inverter (MLI) topology evolution, modulation strategies, space vector modulation, VSC control, and advanced grid/machine interfaces.",
+    modules: [
+      {
+        moduleNumber: 1,
+        moduleTitle: "Introduction to MLI",
+        videos: [
+          {
+            id: "fSOcfUecaaw",
+            title: "Introduction to Half Bridge Circuit",
+            url: "https://youtu.be/fSOcfUecaaw",
+            videoId: "fSOcfUecaaw"
+          },
+          {
+            id: "Sv5pYdCJmMM",
+            title: "Half Bridge, Full Bridge, Gate Driver",
+            url: "https://youtu.be/Sv5pYdCJmMM",
+            videoId: "Sv5pYdCJmMM"
+          },
+          {
+            id: "LxaDbbT0z7Y",
+            title: "Switch Quadrant, Half Bridge Parasitics, Gate Driver Simulation",
+            url: "https://youtu.be/LxaDbbT0z7Y",
+            videoId: "LxaDbbT0z7Y"
+          },
+          {
+            id: "4UxVi7iPf4A",
+            title: "3ph VSI FFT THD PWM, Series Switch, Motivation for MLI",
+            url: "https://youtu.be/4UxVi7iPf4A",
+            videoId: "4UxVi7iPf4A"
+          }
+        ]
+      },
+      {
+        moduleNumber: 2,
+        moduleTitle: "MLI Topologies",
+        videos: [
+          {
+            id: "snZUgG8A1Oo",
+            title: "Introduction to MLI Leg and T-type Inverter",
+            url: "https://youtu.be/snZUgG8A1Oo",
+            videoId: "snZUgG8A1Oo"
+          },
+          {
+            id: "6S-99IVMTzY",
+            title: "Genesis of NPC and Flying Capacitor (FC) MLI",
+            url: "https://youtu.be/6S-99IVMTzY",
+            videoId: "6S-99IVMTzY"
+          },
+          {
+            id: "NihGoB902Fk",
+            title: "PLECS Simulation Tutorial and Assignment",
+            url: "https://youtu.be/NihGoB902Fk",
+            videoId: "NihGoB902Fk"
+          },
+          {
+            id: "Mdh5VLZ4wKE",
+            title: "Cascaded MLI and Modular Multilevel Converter (MMC)",
+            url: "https://youtu.be/Mdh5VLZ4wKE",
+            videoId: "Mdh5VLZ4wKE"
+          },
+          {
+            id: "42CFBbvQQfM",
+            title: "Hybrid MLI Structure and Introduction to Control of MLI",
+            url: "https://youtu.be/42CFBbvQQfM",
+            videoId: "42CFBbvQQfM"
+          },
+          {
+            id: "Ede9ivgipSE-1",
+            title: "Space Vector NP Voltage Control and CMV Reduction",
+            url: "https://youtu.be/Ede9ivgipSE",
+            videoId: "Ede9ivgipSE"
+          }
+        ]
+      },
+      {
+        moduleNumber: 3,
+        moduleTitle: "PWM Techniques for MLI",
+        videos: [
+          {
+            id: "yTgG7IYSah8-1",
+            title: "MLI PWM, LSPWM and PSPWM and In-Class Assignment",
+            url: "https://youtu.be/yTgG7IYSah8",
+            videoId: "yTgG7IYSah8"
+          },
+          {
+            id: "SpdUjzeaWNc",
+            title: "LSPWM and PSPWM in Details",
+            url: "https://youtu.be/SpdUjzeaWNc",
+            videoId: "SpdUjzeaWNc"
+          },
+          {
+            id: "AUsQjh9r7Gg",
+            title: "MLI PWM Continued || CM Injection PWM",
+            url: "https://youtu.be/AUsQjh9r7Gg",
+            videoId: "AUsQjh9r7Gg"
+          },
+          {
+            id: "WSVZdfND0Yo",
+            title: "Introduction to Space Vector Theory",
+            url: "https://youtu.be/WSVZdfND0Yo",
+            videoId: "WSVZdfND0Yo"
+          },
+          {
+            id: "EB6W8S1Lp5M",
+            title: "Space Vector Modulation (SVM) Fundamentals",
+            url: "https://youtu.be/EB6W8S1Lp5M",
+            videoId: "EB6W8S1Lp5M"
+          },
+          {
+            id: "3TuY90JyzP8",
+            title: "Space Vector Modulation Continued",
+            url: "https://youtu.be/3TuY90JyzP8",
+            videoId: "3TuY90JyzP8"
+          },
+          {
+            id: "Ede9ivgipSE-2",
+            title: "SVM for NPC Voltage Balancing and CMV Mitigation",
+            url: "https://youtu.be/Ede9ivgipSE",
+            videoId: "Ede9ivgipSE"
+          },
+          {
+            id: "eRRNuXuMiWA",
+            title: "Low Frequency PWM and Selective Harmonic Elimination (SHE)",
+            url: "https://youtu.be/eRRNuXuMiWA",
+            videoId: "eRRNuXuMiWA"
+          }
+        ]
+      },
+      {
+        moduleNumber: 4,
+        moduleTitle: "Control of VSC MLI",
+        videos: [
+          {
+            id: "yTgG7IYSah8-2",
+            title: "VSC Control | Hysteresis | dq | Active-Reactive | DC-Link Voltage Control",
+            url: "https://youtu.be/yTgG7IYSah8",
+            videoId: "yTgG7IYSah8"
+          },
+          {
+            id: "gOiO4DirCMo",
+            title: "Generalized Control of VSC (RL Load / Grid / Motor Drive)",
+            url: "https://youtu.be/gOiO4DirCMo",
+            videoId: "gOiO4DirCMo"
+          },
+          {
+            id: "0iC2l5Nvaek",
+            title: "Motor Drive Control | Model Predictive Control (MPC)",
+            url: "https://youtu.be/0iC2l5Nvaek",
+            videoId: "0iC2l5Nvaek"
+          },
+          {
+            id: "ARchXndBTx0",
+            title: "DQ (Voltage) Control of VSC | Closed-Loop Controller Design",
+            url: "https://www.youtube.com/watch?v=ARchXndBTx0",
+            videoId: "ARchXndBTx0"
+          }
+        ]
+      },
+      {
+        moduleNumber: 5,
+        moduleTitle: "Special Topics in MLI",
+        videos: [
+          {
+            id: "dt9baa8FEbw",
+            title: "Introduction to Multi-Pulse Rectifier Systems",
+            url: "https://youtu.be/dt9baa8FEbw",
+            videoId: "dt9baa8FEbw"
+          },
+          {
+            id: "T9KJCOo_WZs",
+            title: "Phase Shifting Transformers & Harmonic Cancellation",
+            url: "https://youtu.be/T9KJCOo_WZs",
+            videoId: "T9KJCOo_WZs"
+          },
+          {
+            id: "KLfgx3FmgPY",
+            title: "MMC DC Fault Analysis & Circulating Current Dynamics",
+            url: "https://youtu.be/KLfgx3FmgPY",
+            videoId: "KLfgx3FmgPY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    courseCode: "EE31011",
+    courseTitle: "Power Electronics",
+    level: "Undergraduate Core",
+    description: "Fundamental course covering power semiconductor switches, AC-to-DC converters (uncontrolled and controlled rectifiers), DC-to-AC inverters, and AC-to-AC regulators with ripple and harmonic analysis.",
+    modules: [
+      {
+        moduleNumber: 3,
+        moduleTitle: "AC to DC Converters (Rectifiers)",
+        videos: [
+          {
+            id: "H1Ih44Si_ic",
+            title: "Lecture 1: AC to DC Converters — Fundamentals & Half-Wave Topologies",
+            url: "https://youtu.be/H1Ih44Si_ic",
+            videoId: "H1Ih44Si_ic"
+          },
+          {
+            id: "-LiM0M7qVvQ",
+            title: "Lecture 2: Full-Bridge Rectifiers with R & R-L Loads",
+            url: "https://youtu.be/-LiM0M7qVvQ",
+            videoId: "-LiM0M7qVvQ"
+          },
+          {
+            id: "JmAPWgq4nEU",
+            title: "Lecture 3: Controlled Rectifier Operation & Firing Delay Analysis",
+            url: "https://youtu.be/JmAPWgq4nEU",
+            videoId: "JmAPWgq4nEU"
+          },
+          {
+            id: "Czy47-fMSKY",
+            title: "Lecture 4: Commutation Overlap & Continuous/Discontinuous Conduction Modes",
+            url: "https://youtu.be/Czy47-fMSKY",
+            videoId: "Czy47-fMSKY"
+          },
+          {
+            id: "3opHKH48KL8",
+            title: "Lecture 5: Harmonic Spectrum, Input Power Factor & Filter Design",
+            url: "https://youtu.be/3opHKH48KL8",
+            videoId: "3opHKH48KL8"
+          }
+        ]
+      },
+      {
+        moduleNumber: 4,
+        moduleTitle: "DC to AC Converters (Inverters)",
+        videos: [
+          {
+            id: "B2bGpK1ucow",
+            title: "Lecture 1: Voltage Source Inverters (VSI) — 1-Phase Half & Full Bridge",
+            url: "https://youtu.be/B2bGpK1ucow",
+            videoId: "B2bGpK1ucow"
+          },
+          {
+            id: "DQRqBc-6gZs",
+            title: "Lecture 2: 3-Phase Voltage Source Inverter Conduction States (180° & 120°)",
+            url: "https://youtu.be/DQRqBc-6gZs",
+            videoId: "DQRqBc-6gZs"
+          },
+          {
+            id: "zLJiDl7IPeI",
+            title: "Lecture 3: Sinusoidal Pulse Width Modulation (SPWM) Principles",
+            url: "https://youtu.be/zLJiDl7IPeI",
+            videoId: "zLJiDl7IPeI"
+          },
+          {
+            id: "ky3J01h3SSg",
+            title: "Lecture 4: Modulation Index, Overmodulation & Harmonics Profile",
+            url: "https://youtu.be/ky3J01h3SSg",
+            videoId: "ky3J01h3SSg"
+          },
+          {
+            id: "EWQmHnjldSw",
+            title: "Lecture 5: Current Source Inverter (CSI) Topologies & Comparison",
+            url: "https://youtu.be/EWQmHnjldSw",
+            videoId: "EWQmHnjldSw"
+          },
+          {
+            id: "OFrOPgK2rNs",
+            title: "Lecture 6: Closed-Loop Inverter Output Voltage & Current Regulation",
+            url: "https://youtu.be/OFrOPgK2rNs",
+            videoId: "OFrOPgK2rNs"
+          }
+        ]
+      },
+      {
+        moduleNumber: 5,
+        moduleTitle: "AC to AC Converters (AC Voltage Regulators & Cycloconverters)",
+        videos: [
+          {
+            id: "WDi-ybdcpBE",
+            title: "Lecture 1: 1-Phase & 3-Phase AC Voltage Controllers (Phase Angle & Integral Cycle)",
+            url: "https://youtu.be/WDi-ybdcpBE?si=VXUFMac6cUVLRbDY",
+            videoId: "WDi-ybdcpBE"
+          },
+          {
+            id: "nGNjMjMAk0U",
+            title: "Lecture 2: Cycloconverter Topologies, Matrix Converters & Frequency Synthesis",
+            url: "https://youtu.be/nGNjMjMAk0U",
+            videoId: "nGNjMjMAk0U"
+          }
+        ]
+      }
+    ]
   }
 ];
 

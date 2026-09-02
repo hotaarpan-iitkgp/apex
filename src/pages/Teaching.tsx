@@ -15,9 +15,12 @@ import {
   Layers, 
   Waves,
   Eye,
-  X
+  X,
+  Video,
+  Tv
 } from 'lucide-react';
 import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
+import CourseVideoArchive from '@/components/CourseVideoArchive';
 
 const getAppIcon = (id: string) => {
   switch (id) {
@@ -169,7 +172,36 @@ export default function Teaching() {
         </div>
       </section>
 
-      {/* 3. THIRD: Pedagogical Web Applications (Compact Tiles + Interactive Workbench) */}
+      {/* 3. THIRD: Recorded Course Video Lectures */}
+      <section className="space-y-6">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 bg-red-500/10 dark:bg-red-500/20 rounded-lg text-red-600 dark:text-red-400">
+              <Tv className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-mono font-bold uppercase tracking-wider mb-0.5">
+                <Video className="h-3 w-3" />
+                Classroom Video Archives
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-brand-primary dark:text-white">
+                Course Video Lectures
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Full module-wise classroom recordings for Multilevel Converters (EE60208) and Power Electronics (EE31011)
+              </p>
+            </div>
+          </div>
+          
+          <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            Select any module part to stream in-browser
+          </div>
+        </div>
+
+        <CourseVideoArchive />
+      </section>
+
+      {/* 4. FOURTH: Pedagogical Web Applications (Compact Tiles + Interactive Workbench) */}
       <section className="space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div className="space-y-1.5 max-w-3xl">
