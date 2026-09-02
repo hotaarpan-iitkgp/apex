@@ -120,7 +120,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         {/* Scrollable Horizontal Pill Strip */}
         <div 
           ref={tabsContainerRef}
-          className="flex gap-3 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth snap-x"
+          className="flex gap-2.5 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth snap-x"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {pedagogicalApps.map((app, idx) => {
@@ -129,45 +129,32 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               <button
                 key={app.id}
                 onClick={() => handleSelectApp(idx)}
-                className={`flex-shrink-0 text-left snap-start transition-all duration-300 rounded-2xl p-3.5 sm:p-4 border min-w-[220px] sm:min-w-[250px] max-w-[280px] relative overflow-hidden group ${
+                className={`flex-shrink-0 text-left snap-start transition-all duration-200 rounded-xl px-3.5 py-2.5 border flex items-center gap-3 relative overflow-hidden group ${
                   isSelected 
-                    ? 'bg-slate-950 text-white border-brand-accent shadow-lg shadow-brand-accent/10 ring-2 ring-brand-accent/30' 
-                    : 'bg-white dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm'
+                    ? 'bg-slate-950 text-white border-brand-accent shadow-md ring-1 ring-brand-accent/40' 
+                    : 'bg-white dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-xs'
                 }`}
               >
-                {/* Active gradient accent top line */}
-                {isSelected && (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-secondary via-brand-accent to-blue-400"></div>
-                )}
-
-                <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-xl flex-shrink-0 transition-colors ${
-                    isSelected 
-                      ? 'bg-brand-accent text-slate-950 shadow-sm' 
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-brand-secondary group-hover:bg-brand-secondary/10'
-                  }`}>
-                    {getAppIcon(app.id)}
-                  </div>
-
-                  <div className="space-y-1 min-w-0 flex-1">
-                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider block truncate ${
-                      isSelected ? 'text-brand-accent' : 'text-slate-500 dark:text-slate-400'
-                    }`}>
-                      {app.category}
-                    </span>
-                    <h4 className={`font-serif font-bold text-sm leading-snug line-clamp-1 ${
-                      isSelected ? 'text-white' : 'text-slate-900 dark:text-white'
-                    }`}>
-                      {app.shortTitle}
-                    </h4>
-                  </div>
+                <div className={`p-2 rounded-lg flex-shrink-0 transition-colors ${
+                  isSelected 
+                    ? 'bg-brand-accent text-slate-950 shadow-xs' 
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-brand-secondary group-hover:bg-brand-secondary/10'
+                }`}>
+                  {getAppIcon(app.id)}
                 </div>
 
-                <p className={`text-[11px] mt-2 line-clamp-2 leading-relaxed ${
-                  isSelected ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
-                }`}>
-                  {app.tagline}
-                </p>
+                <div className="min-w-0 pr-1">
+                  <span className={`text-[10px] font-mono font-bold uppercase tracking-wider block truncate ${
+                    isSelected ? 'text-brand-accent' : 'text-slate-500 dark:text-slate-400'
+                  }`}>
+                    {app.category}
+                  </span>
+                  <h4 className={`font-serif font-bold text-xs sm:text-sm leading-snug truncate ${
+                    isSelected ? 'text-white' : 'text-slate-900 dark:text-white'
+                  }`}>
+                    {app.shortTitle}
+                  </h4>
+                </div>
               </button>
             );
           })}

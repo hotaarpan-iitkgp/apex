@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { teaching, pedagogicalApps, PedagogicalApp } from '@/data/portfolio';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +8,6 @@ import {
   Users, 
   Sparkles, 
   ExternalLink, 
-  CheckCircle2, 
   Zap, 
   Compass, 
   Cpu, 
@@ -22,21 +21,46 @@ import {
 import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
 import CourseVideoArchive from '@/components/CourseVideoArchive';
 
+const appMeta: Record<string, { title: string; category: string; summary: string; icon: ReactNode; badgeClass: string }> = {
+  'power-factor': {
+    title: 'Power Factor Lab',
+    category: 'AC Circuits',
+    summary: 'Phasor dynamics, power triangle, and real-time reactive power compensation.',
+    icon: <Zap className="h-4 w-4" />,
+    badgeClass: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 dark:bg-sky-500/20',
+  },
+  'vismmf': {
+    title: 'VisMMF',
+    category: 'Electrical Machines',
+    summary: 'Rotating magnetic field (RMF) and spatial MMF harmonics in AC machines.',
+    icon: <Compass className="h-4 w-4" />,
+    badgeClass: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 dark:bg-amber-500/20',
+  },
+  'rectifier-lab': {
+    title: 'Rectifier Lab',
+    category: 'Power Electronics',
+    summary: 'Controlled and uncontrolled 1-phase and 3-phase AC-to-DC converters.',
+    icon: <Cpu className="h-4 w-4" />,
+    badgeClass: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:bg-emerald-500/20',
+  },
+  'dc-dc-converters': {
+    title: 'DC-DC Converters',
+    category: 'Switched-Mode Power',
+    summary: 'Buck, Boost, and Buck-Boost dynamics in CCM and DCM operating modes.',
+    icon: <Layers className="h-4 w-4" />,
+    badgeClass: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 dark:bg-indigo-500/20',
+  },
+  'emanimate': {
+    title: 'EMAnimate',
+    category: 'Electromagnetics',
+    summary: 'Plane wave propagation, polarization modes, and boundary reflections.',
+    icon: <Waves className="h-4 w-4" />,
+    badgeClass: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 dark:bg-rose-500/20',
+  },
+};
+
 const getAppIcon = (id: string) => {
-  switch (id) {
-    case 'power-factor':
-      return <Zap className="h-4 w-4" />;
-    case 'vismmf':
-      return <Compass className="h-4 w-4" />;
-    case 'rectifier-lab':
-      return <Cpu className="h-4 w-4" />;
-    case 'dc-dc-converters':
-      return <Layers className="h-4 w-4" />;
-    case 'emanimate':
-      return <Waves className="h-4 w-4" />;
-    default:
-      return <Sparkles className="h-4 w-4" />;
-  }
+  return appMeta[id]?.icon || <Sparkles className="h-4 w-4" />;
 };
 
 export default function Teaching() {
@@ -223,94 +247,74 @@ export default function Teaching() {
           </div>
         </div>
 
-        {/* Compact Application Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {pedagogicalApps.map((app, index) => (
-            <motion.div
-              key={app.id}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05, duration: 0.3 }}
-              className="flex flex-col"
-            >
-              <Card className="h-full flex flex-col justify-between border-t-2 border-t-brand-secondary hover:border-t-brand-accent dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow-lg transition-all duration-200 group overflow-hidden">
-                <div className="p-4 pb-2 space-y-3">
-                  
-                  {/* Top Header Line: Icon + Category + Badge */}
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 text-brand-secondary dark:text-brand-accent group-hover:bg-brand-secondary group-hover:text-white transition-colors flex-shrink-0">
-                        {getAppIcon(app.id)}
+        {/* Lean & Aesthetic Application Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {pedagogicalApps.map((app, index) => {
+            const meta = appMeta[app.id] || {
+              title: app.shortTitle || app.title,
+              category: app.category,
+              summary: app.tagline || app.description,
+              icon: <Sparkles className="h-4 w-4" />,
+              badgeClass: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
+            };
+
+            return (
+              <motion.div
+                key={app.id}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.04, duration: 0.25 }}
+                className="flex flex-col"
+              >
+                <div className="h-full flex flex-col justify-between rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-slate-950 p-4 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 group">
+                  <div className="space-y-3">
+                    {/* Top Row: App Icon & Domain Category */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className={`p-2 rounded-xl flex-shrink-0 transition-transform group-hover:scale-105 duration-200 ${meta.badgeClass}`}>
+                        {meta.icon}
                       </div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-secondary dark:text-brand-accent truncate">
-                        {app.category}
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 truncate">
+                        {meta.category}
                       </span>
                     </div>
-                    <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono text-[10px] font-semibold border border-slate-200 dark:border-slate-800 flex-shrink-0">
-                      {app.badge}
-                    </span>
+
+                    {/* App Title & Lean Single-Sentence Summary */}
+                    <div className="space-y-1">
+                      <h3 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-brand-secondary dark:group-hover:text-brand-accent transition-colors leading-snug">
+                        {meta.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
+                        {meta.summary}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Title & Tagline */}
-                  <div className="space-y-1">
-                    <h3 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-brand-secondary dark:group-hover:text-brand-accent transition-colors leading-snug">
-                      {app.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-300 text-xs line-clamp-2 leading-relaxed">
-                      {app.description}
-                    </p>
-                  </div>
+                  {/* Clean Action Controls */}
+                  <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedPreviewApp(app)}
+                      className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100/90 dark:bg-slate-900 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <Eye className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                      <span>Preview</span>
+                    </button>
 
-                  {/* Key Concepts (Compact 2-item list) */}
-                  <div className="space-y-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/60">
-                    <ul className="space-y-1">
-                      {app.concepts.slice(0, 2).map((concept, i) => (
-                        <li key={i} className="flex items-start gap-1.5 text-[11px] text-slate-600 dark:text-slate-300 leading-tight">
-                          <CheckCircle2 className="h-3 w-3 text-brand-secondary dark:text-brand-accent flex-shrink-0 mt-0.5" />
-                          <span className="line-clamp-1">{concept}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Course Tags */}
-                  <div className="flex flex-wrap gap-1 pt-1">
-                    {app.suggestedCourses.map((course, i) => (
-                      <span key={i} className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-[9px] font-mono text-slate-600 dark:text-slate-400">
-                        {course}
-                      </span>
-                    ))}
-                  </div>
-
-                </div>
-
-                {/* Compact Footer Action Buttons */}
-                <div className="px-4 py-2.5 bg-slate-50/70 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-2 mt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedPreviewApp(app)}
-                    className="flex-1 h-7 border-slate-300 dark:border-slate-700 text-[11px] font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 gap-1 px-2"
-                  >
-                    <Eye className="h-3 w-3 text-brand-secondary dark:text-brand-accent" />
-                    <span>Preview</span>
-                  </Button>
-
-                  <Button
-                    asChild
-                    size="sm"
-                    className="flex-1 h-7 bg-brand-primary dark:bg-brand-accent text-white dark:text-slate-950 font-bold text-[11px] rounded-lg shadow-sm hover:opacity-90 gap-1 px-2"
-                  >
-                    <a href={app.url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={app.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-bold text-white dark:text-slate-950 bg-slate-900 dark:bg-slate-100 hover:bg-brand-secondary dark:hover:bg-brand-accent transition-colors shadow-xs"
+                    >
                       <span>Launch</span>
                       <ExternalLink className="h-3 w-3" />
                     </a>
-                  </Button>
+                  </div>
                 </div>
-              </Card>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Live Embedded Workbench Area */}
