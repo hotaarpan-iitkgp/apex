@@ -1,5 +1,6 @@
 {
-  "name": "Arpan Hota - Academic Portfolio",
-  "description": "Professional academic portfolio website for Arpan Hota, Assistant Professor at IIT Kharagpur.",
-  "requestFramePermissions": []
+  "name": "Dr. Arpan Hota — Academic Portfolio",
+  "description": "Professional academic portfolio and research group website for Dr. Arpan Hota, Assistant Professor at IIT Kharagpur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

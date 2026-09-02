@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
@@ -22,6 +22,8 @@ export default function App() {
           <Route path="/students" element={<Students />} />
           <Route path="/service" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          {/* Catch-all fallback */}
+          <Route path="*" element={<Home />} />
         </Routes>
       </Layout>
     </Router>
