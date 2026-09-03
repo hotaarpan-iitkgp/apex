@@ -55,51 +55,51 @@ const getAccentColor = (id: string) => {
   switch (id) {
     case 'power-factor':
       return {
-        badge: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
+        badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
         glow: 'from-amber-500/20 to-transparent',
         dot: 'bg-amber-400',
       };
     case 'vismmf':
       return {
-        badge: 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30',
+        badge: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
         glow: 'from-sky-500/20 to-transparent',
         dot: 'bg-sky-400',
       };
     case 'rectifier-lab':
       return {
-        badge: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+        badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
         glow: 'from-emerald-500/20 to-transparent',
         dot: 'bg-emerald-400',
       };
     case 'dc-dc-converters':
       return {
-        badge: 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30',
+        badge: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
         glow: 'from-indigo-500/20 to-transparent',
         dot: 'bg-indigo-400',
       };
     case 'emanimate':
       return {
-        badge: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30',
+        badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
         glow: 'from-rose-500/20 to-transparent',
         dot: 'bg-rose-400',
       };
     case 'inverter-lab':
       return {
-        badge: 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30',
+        badge: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
         glow: 'from-violet-500/20 to-transparent',
         dot: 'bg-violet-400',
       };
     case 'current-racer':
       return {
-        badge: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/30',
+        badge: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
         glow: 'from-teal-500/20 to-transparent',
         dot: 'bg-teal-400',
       };
     default:
       return {
-        badge: 'bg-brand-accent/15 text-brand-accent border-brand-accent/30',
-        glow: 'from-brand-accent/20 to-transparent',
-        dot: 'bg-brand-accent',
+        badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+        glow: 'from-emerald-500/20 to-transparent',
+        dot: 'bg-emerald-400',
       };
   }
 };
@@ -211,24 +211,31 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
     <div className={`w-full space-y-8 ${className}`}>
       
       {/* 1. Full Horizontal Screen Width Ribbon Card Bar */}
-      <div className="w-full bg-slate-50/80 dark:bg-slate-900/60 border-y border-slate-200/90 dark:border-slate-800/90 py-5 sm:py-6 shadow-xs space-y-4 relative overflow-hidden">
+      <div className="w-full bg-[#070b14] dark:bg-[#070b14] border-y border-slate-800/90 py-6 shadow-2xl space-y-4 relative overflow-hidden">
         
+        {/* Subtle sleek top & bottom accent glow lines */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+
+        {/* Ambient subtle backdrop radial glow */}
+        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 w-3/4 h-32 bg-radial from-sky-900/15 via-transparent to-transparent blur-2xl" />
+
         {/* Ribbon Header: Spanning across the full screen width with side padding */}
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
+        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800/80 relative z-10">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
               </span>
-              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
+              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-slate-100">
                 Interactive Pedagogical Tool Scroller
               </h3>
-              <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-semibold">
+              <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
                 Active: {activeApp.shortTitle || activeApp.title} ({activeAppIndex + 1} of {pedagogicalApps.length})
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-serif italic">
+            <p className="text-xs text-slate-400 flex items-center gap-1.5 font-serif italic">
               <MoveHorizontal className="h-3.5 w-3.5 text-slate-400 inline" />
               Scroll or drag horizontally. Click any tool tile to bring it into center focus and launch in the workbench below.
             </p>
@@ -236,26 +243,26 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
 
           {/* Left / Right Ribbon Glide Controls */}
           <div className="flex items-center gap-2 self-end sm:self-center">
-            <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden md:inline">
+            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider hidden md:inline">
               Slide Scroller:
             </span>
             <Button
               variant="outline"
               size="sm"
               onClick={() => scrollRibbon('left')}
-              className="h-9 w-9 p-0 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs transition-all duration-200 active:scale-95"
+              className="h-9 w-9 p-0 rounded-xl border-slate-700/80 bg-slate-800/80 hover:bg-slate-700/90 text-slate-200 hover:text-white shadow-xs transition-all duration-200 active:scale-95 cursor-pointer"
               title="Slide Scroller Left"
             >
-              <ChevronLeft className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <ChevronLeft className="h-4 w-4 text-slate-200" />
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => scrollRibbon('right')}
-              className="h-9 w-9 p-0 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs transition-all duration-200 active:scale-95"
+              className="h-9 w-9 p-0 rounded-xl border-slate-700/80 bg-slate-800/80 hover:bg-slate-700/90 text-slate-200 hover:text-white shadow-xs transition-all duration-200 active:scale-95 cursor-pointer"
               title="Slide Scroller Right"
             >
-              <ChevronRight className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <ChevronRight className="h-4 w-4 text-slate-200" />
             </Button>
           </div>
         </div>
@@ -264,8 +271,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         <div className="relative w-full">
           
           {/* Visual gradient edge fades to indicate horizontal depth */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-slate-50/95 dark:from-slate-900/95 to-transparent z-10 hidden sm:block" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-slate-50/95 dark:from-slate-900/95 to-transparent z-10 hidden sm:block" />
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-[#070b14] to-transparent z-10 hidden sm:block" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#070b14] to-transparent z-10 hidden sm:block" />
 
           {/* Horizontal Track with drag-to-scroll and full horizontal space occupancy */}
           <div 
@@ -295,8 +302,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                   }}
                   className={`flex-shrink-0 text-left snap-center transition-all duration-300 rounded-2xl p-5 border flex flex-col justify-between gap-4 relative overflow-hidden group cursor-pointer w-[270px] sm:w-[300px] md:w-[320px] lg:w-[340px] ${
                     isSelected 
-                      ? 'bg-slate-950 text-white border-2 border-brand-accent shadow-xl shadow-brand-accent/20 ring-4 ring-brand-accent/25 scale-[1.02] z-10' 
-                      : 'bg-white/95 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-800 hover:border-brand-secondary/50 dark:hover:border-brand-accent/50 hover:shadow-lg hover:bg-slate-50 dark:hover:bg-slate-850 shadow-xs'
+                      ? 'bg-gradient-to-b from-[#131e36] to-[#0a1122] text-white border-2 border-emerald-400 shadow-2xl shadow-emerald-500/20 ring-4 ring-emerald-400/20 scale-[1.02] z-10' 
+                      : 'bg-[#0e1526]/85 hover:bg-[#131d33] text-slate-300 border-slate-800/80 hover:border-slate-700 hover:shadow-xl hover:shadow-black/50 shadow-md backdrop-blur-sm'
                   }`}
                 >
                   {/* Top Row: Icon, Category Badge & Sequence Index */}
@@ -304,8 +311,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                     <div className="flex items-center gap-3 min-w-0">
                       <div className={`p-2.5 rounded-xl flex-shrink-0 transition-transform group-hover:scale-105 duration-200 ${
                         isSelected 
-                          ? 'bg-brand-accent text-slate-950 shadow-md font-bold' 
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-brand-secondary/15 group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
+                          ? 'bg-emerald-400 text-slate-950 shadow-md font-bold' 
+                          : 'bg-slate-800/90 text-slate-300 group-hover:bg-slate-700/90 group-hover:text-white border border-slate-700/40'
                       }`}>
                         {getAppIcon(app.id)}
                       </div>
@@ -313,7 +320,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                       <div className="min-w-0">
                         <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-block max-w-full truncate ${
                           isSelected 
-                            ? 'bg-white/10 text-brand-accent border-brand-accent/40' 
+                            ? 'bg-emerald-400/15 text-emerald-300 border-emerald-400/40' 
                             : accent.badge
                         }`}>
                           {app.category}
@@ -322,7 +329,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                     </div>
 
                     <span className={`text-xs font-mono font-bold flex-shrink-0 ${
-                      isSelected ? 'text-brand-accent' : 'text-slate-400 dark:text-slate-500'
+                      isSelected ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-400'
                     }`}>
                       0{idx + 1}
                     </span>
@@ -331,12 +338,12 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                   {/* Middle Content: Title and Generous Description */}
                   <div className="space-y-1.5 w-full">
                     <h4 className={`font-serif font-bold text-base sm:text-lg leading-snug ${
-                      isSelected ? 'text-white' : 'text-slate-900 dark:text-white group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
+                      isSelected ? 'text-white' : 'text-slate-100 group-hover:text-emerald-300 transition-colors'
                     }`}>
                       {app.shortTitle || app.title}
                     </h4>
                     <p className={`text-xs sm:text-[13px] leading-relaxed line-clamp-2 ${
-                      isSelected ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'
+                      isSelected ? 'text-slate-200' : 'text-slate-400 group-hover:text-slate-300'
                     }`}>
                       {app.tagline || app.description}
                     </p>
@@ -345,8 +352,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                   {/* Bottom Footer: Active Indicator or Action Prompt */}
                   <div className={`pt-3 border-t flex items-center justify-between text-xs font-mono transition-colors ${
                     isSelected 
-                      ? 'border-slate-800 text-brand-accent' 
-                      : 'border-slate-100 dark:border-slate-800/80 text-slate-500 group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
+                      ? 'border-slate-700/80 text-emerald-400' 
+                      : 'border-slate-800/80 text-slate-400 group-hover:text-emerald-400'
                   }`}>
                     <div className="flex items-center gap-1.5 font-semibold">
                       {isSelected ? (
@@ -363,7 +370,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                     </div>
 
                     <ArrowRight className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                      isSelected ? 'translate-x-0.5 text-brand-accent' : 'group-hover:translate-x-1 opacity-60 group-hover:opacity-100'
+                      isSelected ? 'translate-x-0.5 text-emerald-400' : 'group-hover:translate-x-1 opacity-60 group-hover:opacity-100'
                     }`} />
                   </div>
                 </button>
@@ -373,7 +380,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         </div>
 
         {/* Indicator Progress Dots for Quick Navigation */}
-        <div className="flex items-center justify-center gap-2 pt-1">
+        <div className="flex items-center justify-center gap-2 pt-1 relative z-10">
           {pedagogicalApps.map((app, idx) => (
             <button
               key={`dot-${app.id}`}
@@ -382,8 +389,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               aria-label={`Jump to ${app.shortTitle}`}
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                 idx === activeAppIndex 
-                  ? 'w-8 bg-brand-accent shadow-xs' 
-                  : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600'
+                  ? 'w-8 bg-emerald-400 shadow-xs shadow-emerald-400/50' 
+                  : 'w-2 bg-slate-800 hover:bg-slate-700'
               }`}
             />
           ))}
