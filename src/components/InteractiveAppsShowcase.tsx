@@ -193,10 +193,10 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
     <div className={`w-full space-y-8 ${className}`}>
       
       {/* 1. Full Horizontal Screen Width Ribbon Card Bar */}
-      <div className="w-full rounded-3xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/90 dark:border-slate-800/90 p-4 sm:p-6 lg:p-8 shadow-sm space-y-4 relative overflow-hidden">
+      <div className="w-full bg-slate-50/80 dark:bg-slate-900/60 border-y border-slate-200/90 dark:border-slate-800/90 py-5 sm:py-6 shadow-xs space-y-4 relative overflow-hidden">
         
-        {/* Ribbon Header: Full-width spanning info and navigation controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
+        {/* Ribbon Header: Spanning across the full screen width with side padding */}
+        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
               <span className="flex h-2.5 w-2.5 relative">
@@ -243,7 +243,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         </div>
 
         {/* Edge-to-Edge Horizontally Scrolling Tiles Track */}
-        <div className="relative -mx-2 sm:-mx-4 px-2 sm:px-4">
+        <div className="relative w-full">
           
           {/* Visual gradient edge fades to indicate horizontal depth */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-slate-50/95 dark:from-slate-900/95 to-transparent z-10 hidden sm:block" />
@@ -258,7 +258,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
             onMouseLeave={handleMouseUpOrLeave}
-            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto py-3 px-3 sm:px-12 lg:px-16 no-scrollbar scroll-smooth snap-x snap-mandatory focus:outline-none cursor-grab active:cursor-grabbing select-none"
+            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto py-3 px-4 sm:px-8 lg:px-12 xl:px-16 no-scrollbar scroll-smooth snap-x snap-mandatory focus:outline-none cursor-grab active:cursor-grabbing select-none"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {pedagogicalApps.map((app, idx) => {
@@ -372,10 +372,11 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         </div>
       </div>
 
-      {/* 2. Full-Width Embedded Workbench Viewport */}
-      <div className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300 ${
-        isFullscreen ? 'fixed inset-4 z-50 rounded-2xl flex flex-col' : 'w-full'
-      }`}>
+      {/* 2. Embedded Workbench Viewport - Kept in the middle like previous case */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300 ${
+          isFullscreen ? 'fixed inset-4 z-50 rounded-2xl flex flex-col' : 'w-full'
+        }`}>
         
         {/* Browser Chrome Navigation Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md text-white text-xs z-20">
@@ -583,6 +584,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
         </div>
 
       </div>
+    </div>
 
     </div>
   );

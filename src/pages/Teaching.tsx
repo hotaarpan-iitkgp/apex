@@ -179,9 +179,10 @@ export default function Teaching() {
         </div>
       </section>
 
-      {/* 3. THIRD SECTION: Pedagogical Web Applications (Full Horizontal Screen Width) */}
+      {/* 3. THIRD SECTION: Pedagogical Web Applications */}
       <section className="w-full py-16 sm:py-20 lg:py-24 space-y-10 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/30">
-        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
+        {/* Subheader Title - Centered in middle */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionRibbon
             icon={<Cpu className="h-5 w-5" />}
             eyebrow="VIRTUAL SIMULATION & OPEN PEDAGOGY"
@@ -197,10 +198,8 @@ export default function Teaching() {
           />
         </div>
 
-        {/* Live Embedded Workbench Area - Full Horizontal Span */}
-        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
-          <InteractiveAppsShowcase />
-        </div>
+        {/* Full-width ribbon + Centered workbench */}
+        <InteractiveAppsShowcase />
       </section>
 
     </div>
