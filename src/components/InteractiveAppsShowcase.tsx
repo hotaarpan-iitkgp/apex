@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, type MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, 
@@ -15,7 +15,10 @@ import {
   CheckCircle2, 
   Sparkles,
   Info,
-  GraduationCap
+  GraduationCap,
+  Play,
+  ArrowRight,
+  MoveHorizontal
 } from 'lucide-react';
 import { pedagogicalApps, PedagogicalApp } from '@/data/portfolio';
 import { Button } from '@/components/ui/button';
@@ -42,6 +45,47 @@ const getAppIcon = (id: string) => {
   }
 };
 
+const getAccentColor = (id: string) => {
+  switch (id) {
+    case 'power-factor':
+      return {
+        badge: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
+        glow: 'from-amber-500/20 to-transparent',
+        dot: 'bg-amber-400',
+      };
+    case 'vismmf':
+      return {
+        badge: 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30',
+        glow: 'from-sky-500/20 to-transparent',
+        dot: 'bg-sky-400',
+      };
+    case 'rectifier-lab':
+      return {
+        badge: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+        glow: 'from-emerald-500/20 to-transparent',
+        dot: 'bg-emerald-400',
+      };
+    case 'dc-dc-converters':
+      return {
+        badge: 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30',
+        glow: 'from-indigo-500/20 to-transparent',
+        dot: 'bg-indigo-400',
+      };
+    case 'emanimate':
+      return {
+        badge: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30',
+        glow: 'from-rose-500/20 to-transparent',
+        dot: 'bg-rose-400',
+      };
+    default:
+      return {
+        badge: 'bg-brand-accent/15 text-brand-accent border-brand-accent/30',
+        glow: 'from-brand-accent/20 to-transparent',
+        dot: 'bg-brand-accent',
+      };
+  }
+};
+
 export default function InteractiveAppsShowcase({ className = '', defaultAppId }: Props) {
   const [activeAppIndex, setActiveAppIndex] = useState(() => {
     if (defaultAppId) {
@@ -57,23 +101,79 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
   const [showInfo, setShowInfo] = useState(false);
 
   const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
+
   const activeApp: PedagogicalApp = pedagogicalApps[activeAppIndex];
 
+  // Center selected card smoothly in the ribbon viewport
+  const centerCard = (index: number) => {
+    const container = tabsContainerRef.current;
+    const card = cardRefs.current[index];
+    if (container && card) {
+      const containerWidth = container.offsetWidth;
+      const cardLeft = card.offsetLeft;
+      const cardWidth = card.offsetWidth;
+      const targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+      
+      container.scrollTo({
+        left: Math.max(0, targetScrollLeft),
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const handleSelectApp = (index: number) => {
-    if (index === activeAppIndex) return;
+    if (index === activeAppIndex) {
+      centerCard(index);
+      return;
+    }
     setIsLoading(true);
     setActiveAppIndex(index);
     setIframeKey(prev => prev + 1);
+    setTimeout(() => {
+      centerCard(index);
+    }, 40);
   };
 
-  const handlePrev = () => {
-    const nextIdx = (activeAppIndex - 1 + pedagogicalApps.length) % pedagogicalApps.length;
-    handleSelectApp(nextIdx);
+  const scrollRibbon = (direction: 'left' | 'right') => {
+    const container = tabsContainerRef.current;
+    if (!container) return;
+    const scrollDelta = container.offsetWidth * 0.75;
+    container.scrollBy({
+      left: direction === 'left' ? -scrollDelta : scrollDelta,
+      behavior: 'smooth'
+    });
   };
 
-  const handleNext = () => {
-    const nextIdx = (activeAppIndex + 1) % pedagogicalApps.length;
-    handleSelectApp(nextIdx);
+  // Mouse drag-to-scroll listeners
+  const handleMouseDown = (e: MouseEvent) => {
+    const container = tabsContainerRef.current;
+    if (!container) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftRef.current = container.scrollLeft;
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDraggingRef.current) return;
+    const container = tabsContainerRef.current;
+    if (!container) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startXRef.current) * 1.3;
+    if (Math.abs(walk) > 6) {
+      hasMovedRef.current = true;
+    }
+    container.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
   };
 
   const reloadIframe = () => {
@@ -81,93 +181,204 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
     setIframeKey(prev => prev + 1);
   };
 
+  // Center initial active card on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      centerCard(activeAppIndex);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`w-full space-y-8 ${className}`}>
       
-      {/* 1. Horizontal App Selection Strip (Horizontal Moving / Clickable Cards) */}
-      <div className="relative">
-        <div className="flex items-center justify-between mb-3 px-1">
-          <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-brand-secondary dark:text-brand-accent">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span>Select Interactive Pedagogical Tool ({activeAppIndex + 1} / {pedagogicalApps.length})</span>
+      {/* 1. Full Horizontal Screen Width Ribbon Card Bar */}
+      <div className="w-full rounded-3xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/90 dark:border-slate-800/90 p-4 sm:p-6 lg:p-8 shadow-sm space-y-4 relative overflow-hidden">
+        
+        {/* Ribbon Header: Full-width spanning info and navigation controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-200/70 dark:border-slate-800/70">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span className="flex h-2.5 w-2.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
+                Interactive Pedagogical Tool Scroller
+              </h3>
+              <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-semibold">
+                Active: {activeApp.shortTitle || activeApp.title} ({activeAppIndex + 1} of {pedagogicalApps.length})
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-serif italic">
+              <MoveHorizontal className="h-3.5 w-3.5 text-slate-400 inline" />
+              Scroll or drag horizontally. Click any tool tile to bring it into center focus and launch in the workbench below.
+            </p>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          {/* Left / Right Ribbon Glide Controls */}
+          <div className="flex items-center gap-2 self-end sm:self-center">
+            <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden md:inline">
+              Slide Scroller:
+            </span>
             <Button
               variant="outline"
               size="sm"
-              onClick={handlePrev}
-              className="h-8 w-8 p-0 rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm"
-              title="Previous Application"
+              onClick={() => scrollRibbon('left')}
+              className="h-9 w-9 p-0 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs transition-all duration-200 active:scale-95"
+              title="Slide Scroller Left"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={handleNext}
-              className="h-8 w-8 p-0 rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm"
-              title="Next Application"
+              onClick={() => scrollRibbon('right')}
+              className="h-9 w-9 p-0 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs transition-all duration-200 active:scale-95"
+              title="Slide Scroller Right"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             </Button>
           </div>
         </div>
 
-        {/* Scrollable Horizontal Pill Strip */}
-        <div 
-          ref={tabsContainerRef}
-          className="flex gap-2.5 overflow-x-auto pb-2 pt-1 no-scrollbar scroll-smooth snap-x"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {pedagogicalApps.map((app, idx) => {
-            const isSelected = idx === activeAppIndex;
-            return (
-              <button
-                key={app.id}
-                onClick={() => handleSelectApp(idx)}
-                className={`flex-shrink-0 text-left snap-start transition-all duration-200 rounded-xl px-3.5 py-2.5 border flex items-center gap-3 relative overflow-hidden group ${
-                  isSelected 
-                    ? 'bg-slate-950 text-white border-brand-accent shadow-md ring-1 ring-brand-accent/40' 
-                    : 'bg-white dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-xs'
-                }`}
-              >
-                <div className={`p-2 rounded-lg flex-shrink-0 transition-colors ${
-                  isSelected 
-                    ? 'bg-brand-accent text-slate-950 shadow-xs' 
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-brand-secondary group-hover:bg-brand-secondary/10'
-                }`}>
-                  {getAppIcon(app.id)}
-                </div>
+        {/* Edge-to-Edge Horizontally Scrolling Tiles Track */}
+        <div className="relative -mx-2 sm:-mx-4 px-2 sm:px-4">
+          
+          {/* Visual gradient edge fades to indicate horizontal depth */}
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-slate-50/95 dark:from-slate-900/95 to-transparent z-10 hidden sm:block" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-slate-50/95 dark:from-slate-900/95 to-transparent z-10 hidden sm:block" />
 
-                <div className="min-w-0 pr-1">
-                  <span className={`text-[10px] font-mono font-bold uppercase tracking-wider block truncate ${
-                    isSelected ? 'text-brand-accent' : 'text-slate-500 dark:text-slate-400'
+          {/* Horizontal Track with drag-to-scroll and full horizontal space occupancy */}
+          <div 
+            ref={tabsContainerRef}
+            tabIndex={0}
+            aria-label="Pedagogical Applications Horizontal Scroller"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto py-3 px-3 sm:px-12 lg:px-16 no-scrollbar scroll-smooth snap-x snap-mandatory focus:outline-none cursor-grab active:cursor-grabbing select-none"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {pedagogicalApps.map((app, idx) => {
+              const isSelected = idx === activeAppIndex;
+              const accent = getAccentColor(app.id);
+
+              return (
+                <button
+                  key={app.id}
+                  ref={el => (cardRefs.current[idx] = el)}
+                  type="button"
+                  onClick={() => {
+                    if (!hasMovedRef.current) {
+                      handleSelectApp(idx);
+                    }
+                  }}
+                  className={`flex-shrink-0 text-left snap-center transition-all duration-300 rounded-2xl p-5 border flex flex-col justify-between gap-4 relative overflow-hidden group cursor-pointer w-[270px] sm:w-[300px] md:w-[320px] lg:w-[340px] ${
+                    isSelected 
+                      ? 'bg-slate-950 text-white border-2 border-brand-accent shadow-xl shadow-brand-accent/20 ring-4 ring-brand-accent/25 scale-[1.02] z-10' 
+                      : 'bg-white/95 dark:bg-slate-900/90 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-800 hover:border-brand-secondary/50 dark:hover:border-brand-accent/50 hover:shadow-lg hover:bg-slate-50 dark:hover:bg-slate-850 shadow-xs'
+                  }`}
+                >
+                  {/* Top Row: Icon, Category Badge & Sequence Index */}
+                  <div className="flex items-start justify-between gap-2.5 w-full">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className={`p-2.5 rounded-xl flex-shrink-0 transition-transform group-hover:scale-105 duration-200 ${
+                        isSelected 
+                          ? 'bg-brand-accent text-slate-950 shadow-md font-bold' 
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-brand-secondary/15 group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
+                      }`}>
+                        {getAppIcon(app.id)}
+                      </div>
+
+                      <div className="min-w-0">
+                        <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-block max-w-full truncate ${
+                          isSelected 
+                            ? 'bg-white/10 text-brand-accent border-brand-accent/40' 
+                            : accent.badge
+                        }`}>
+                          {app.category}
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className={`text-xs font-mono font-bold flex-shrink-0 ${
+                      isSelected ? 'text-brand-accent' : 'text-slate-400 dark:text-slate-500'
+                    }`}>
+                      0{idx + 1}
+                    </span>
+                  </div>
+
+                  {/* Middle Content: Title and Generous Description */}
+                  <div className="space-y-1.5 w-full">
+                    <h4 className={`font-serif font-bold text-base sm:text-lg leading-snug ${
+                      isSelected ? 'text-white' : 'text-slate-900 dark:text-white group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
+                    }`}>
+                      {app.shortTitle || app.title}
+                    </h4>
+                    <p className={`text-xs sm:text-[13px] leading-relaxed line-clamp-2 ${
+                      isSelected ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'
+                    }`}>
+                      {app.tagline || app.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Footer: Active Indicator or Action Prompt */}
+                  <div className={`pt-3 border-t flex items-center justify-between text-xs font-mono transition-colors ${
+                    isSelected 
+                      ? 'border-slate-800 text-brand-accent' 
+                      : 'border-slate-100 dark:border-slate-800/80 text-slate-500 group-hover:text-brand-secondary dark:group-hover:text-brand-accent'
                   }`}>
-                    {app.category}
-                  </span>
-                  <h4 className={`font-serif font-bold text-xs sm:text-sm leading-snug truncate ${
-                    isSelected ? 'text-white' : 'text-slate-900 dark:text-white'
-                  }`}>
-                    {app.shortTitle}
-                  </h4>
-                </div>
-              </button>
-            );
-          })}
+                    <div className="flex items-center gap-1.5 font-semibold">
+                      {isSelected ? (
+                        <>
+                          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>ACTIVE IN WORKBENCH</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-3 w-3 fill-current opacity-70" />
+                          <span>Click to Center</span>
+                        </>
+                      )}
+                    </div>
+
+                    <ArrowRight className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                      isSelected ? 'translate-x-0.5 text-brand-accent' : 'group-hover:translate-x-1 opacity-60 group-hover:opacity-100'
+                    }`} />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Indicator Progress Dots for Quick Navigation */}
+        <div className="flex items-center justify-center gap-2 pt-1">
+          {pedagogicalApps.map((app, idx) => (
+            <button
+              key={`dot-${app.id}`}
+              type="button"
+              onClick={() => handleSelectApp(idx)}
+              aria-label={`Jump to ${app.shortTitle}`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                idx === activeAppIndex 
+                  ? 'w-8 bg-brand-accent shadow-xs' 
+                  : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600'
+              }`}
+            />
+          ))}
         </div>
       </div>
 
-      {/* 2. Embedded Big Area with Browser-Style Frame Header */}
+      {/* 2. Full-Width Embedded Workbench Viewport */}
       <div className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300 ${
         isFullscreen ? 'fixed inset-4 z-50 rounded-2xl flex flex-col' : 'w-full'
       }`}>
         
         {/* Browser Chrome Navigation Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md text-white text-xs z-20">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md text-white text-xs z-20">
           
           {/* Window dots & App Identity */}
           <div className="flex items-center gap-3">
@@ -186,7 +397,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               <span className="font-serif font-bold text-white text-xs sm:text-sm truncate max-w-[200px] sm:max-w-md">
                 {activeApp.title}
               </span>
-              <span className="hidden md:inline-block px-2 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent text-[10px] font-mono font-bold">
+              <span className="hidden md:inline-block px-2.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent text-[10px] font-mono font-bold border border-brand-accent/30">
                 {activeApp.badge}
               </span>
             </div>
@@ -194,8 +405,8 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
 
           {/* URL bar indicator & Actions */}
           <div className="flex items-center gap-2">
-            {/* Live active indicator */}
-            <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono text-[11px] max-w-xs truncate">
+            {/* Live active URL indicator */}
+            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono text-[11px] max-w-sm truncate">
               <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span className="truncate">{activeApp.url}</span>
             </div>
@@ -205,7 +416,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               variant="ghost"
               size="sm"
               onClick={reloadIframe}
-              className="h-8 px-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
+              className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
               title="Reload Simulation"
             >
               <RotateCw className="h-3.5 w-3.5" />
@@ -229,7 +440,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               variant="ghost"
               size="sm"
               onClick={() => setIsFullscreen(!isFullscreen)}
-              className="h-8 px-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
+              className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
               title={isFullscreen ? "Exit Fullscreen" : "Expand Fullscreen"}
             >
               {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
@@ -239,7 +450,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
             <Button
               asChild
               size="sm"
-              className="h-8 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-lg text-xs px-3 shadow-sm gap-1.5"
+              className="h-8 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-lg text-xs px-3 shadow-xs gap-1.5"
             >
               <a href={activeApp.url} target="_blank" rel="noopener noreferrer">
                 <span>Open in Tab</span>
@@ -252,7 +463,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
 
         {/* Live Simulation IFrame Viewport */}
         <div className={`relative w-full bg-slate-900 ${
-          isFullscreen ? 'flex-1 h-full' : 'h-[580px] sm:h-[660px] lg:h-[720px]'
+          isFullscreen ? 'flex-1 h-full' : 'h-[600px] sm:h-[680px] lg:h-[740px]'
         }`}>
           
           {/* Loading Overlay */}
@@ -266,7 +477,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
               </div>
               <div className="text-center space-y-1">
                 <p className="font-serif font-bold text-base text-white">Loading {activeApp.shortTitle}...</p>
-                <p className="text-xs text-slate-400 font-mono">Connecting to GitHub Pages live sandbox</p>
+                <p className="text-xs text-slate-400 font-mono">Connecting to live simulation</p>
               </div>
             </div>
           )}
@@ -288,101 +499,86 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                 initial={{ opacity: 0, x: 300 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 300 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute top-0 right-0 bottom-0 w-full sm:w-96 bg-slate-950/95 backdrop-blur-xl border-l border-slate-800 p-6 z-20 text-white overflow-y-auto space-y-6 shadow-2xl"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-slate-950/95 border-l border-slate-800 text-white p-6 overflow-y-auto z-20 backdrop-blur-md shadow-2xl"
               >
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <div className="flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5 text-brand-accent" />
-                    <h4 className="font-serif font-bold text-base text-white">Pedagogical Overview</h4>
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
+                  <div className="flex items-center gap-2 text-brand-accent">
+                    <GraduationCap className="h-5 w-5" />
+                    <h4 className="font-serif font-bold text-lg text-white">Curriculum & Theory</h4>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                  <button
                     onClick={() => setShowInfo(false)}
-                    className="h-7 w-7 p-0 text-slate-400 hover:text-white rounded-full"
+                    className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800 text-sm"
                   >
                     ✕
-                  </Button>
+                  </button>
                 </div>
 
-                <div className="space-y-3">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-accent">
-                    {activeApp.category}
-                  </span>
-                  <h3 className="font-serif font-bold text-xl text-white">
-                    {activeApp.title}
-                  </h3>
-                  <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                    {activeApp.description}
-                  </p>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-slate-800/80">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Core Physical Concepts
-                  </h5>
-                  <ul className="space-y-2">
-                    {activeApp.concepts.map((c, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-brand-accent flex-shrink-0 mt-0.5" />
-                        <span>{c}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="space-y-2.5 pt-2 border-t border-slate-800/80">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Key Features in This App
-                  </h5>
-                  <ul className="space-y-2">
-                    {activeApp.keyFeatures.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                        <span className="h-1.5 w-1.5 rounded-full bg-brand-secondary dark:bg-brand-accent mt-1.5 flex-shrink-0" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Integrated Courses at IIT Kharagpur
-                  </h5>
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeApp.suggestedCourses.map((crs, i) => (
-                      <span key={i} className="px-2 py-1 bg-slate-900 border border-slate-800 rounded-md text-[11px] font-mono text-brand-accent">
-                        {crs}
-                      </span>
-                    ))}
+                <div className="space-y-6 text-xs text-slate-300">
+                  <div>
+                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-1.5">
+                      Pedagogical Objective
+                    </h5>
+                    <p className="leading-relaxed text-slate-300 font-sans">
+                      {activeApp.description}
+                    </p>
                   </div>
-                </div>
 
-                <div className="pt-3">
-                  <Button asChild className="w-full bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-xl text-xs py-5">
-                    <a href={activeApp.url} target="_blank" rel="noopener noreferrer">
-                      Open Dedicated Full View <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                    </a>
-                  </Button>
+                  <div>
+                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
+                      Core Academic Concepts
+                    </h5>
+                    <ul className="space-y-2">
+                      {activeApp.concepts.map((c, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span>{c}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
+                      Interactive Capabilities
+                    </h5>
+                    <ul className="space-y-1.5">
+                      {activeApp.keyFeatures.map((f, i) => (
+                        <li key={i} className="flex items-start gap-2 text-slate-400">
+                          <span className="text-brand-accent">•</span>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
+                      Suggested IIT KGP Courses
+                    </h5>
+                    <div className="flex flex-wrap gap-1.5">
+                      {activeApp.suggestedCourses.map((c, i) => (
+                        <span key={i} className="px-2 py-0.5 bg-slate-800 text-slate-300 rounded font-mono text-[10px]">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
         </div>
 
-        {/* Bottom bar summary & quick controls */}
-        <div className="px-5 py-3.5 bg-slate-950 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        {/* Bottom Status Bar */}
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-900/90 border-t border-slate-800/80 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-200">Interactive Controls:</span>
-            <span>Use sliders, parameter dials, and circuit selectors directly inside the live viewport above.</span>
+            <span className="text-slate-300 font-bold">Interactive Controls:</span>
+            <span>Use sliders, parameter dials, and circuit selections directly inside the live viewport above.</span>
           </div>
-
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px] text-slate-400">
-              Developed by <strong className="text-white">Dr. Arpan Hota</strong> for pedagogical coursework
-            </span>
+          <div className="text-slate-300">
+            Developed by <strong className="text-white">Dr. Arpan Hota</strong> for pedagogical coursework
           </div>
         </div>
 

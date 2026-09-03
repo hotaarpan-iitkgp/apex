@@ -1,72 +1,19 @@
-import { useState, type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { teaching, pedagogicalApps, PedagogicalApp } from '@/data/portfolio';
+import { motion } from 'framer-motion';
+import { teaching } from '@/data/portfolio';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { 
   BookOpen, 
   Users, 
   Sparkles, 
-  ExternalLink, 
-  Zap, 
-  Compass, 
-  Cpu, 
-  Layers, 
-  Waves,
-  Eye,
-  X,
   Video,
-  Tv
+  Tv,
+  Cpu
 } from 'lucide-react';
 import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
 import CourseVideoArchive from '@/components/CourseVideoArchive';
 import SectionRibbon from '@/components/SectionRibbon';
 
-const appMeta: Record<string, { title: string; category: string; summary: string; icon: ReactNode; badgeClass: string }> = {
-  'power-factor': {
-    title: 'Power Factor Lab',
-    category: 'AC Circuits',
-    summary: 'Phasor dynamics, power triangle, and real-time reactive power compensation.',
-    icon: <Zap className="h-4 w-4" />,
-    badgeClass: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 dark:bg-sky-500/20',
-  },
-  'vismmf': {
-    title: 'VisMMF',
-    category: 'Electrical Machines',
-    summary: 'Rotating magnetic field (RMF) and spatial MMF harmonics in AC machines.',
-    icon: <Compass className="h-4 w-4" />,
-    badgeClass: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 dark:bg-amber-500/20',
-  },
-  'rectifier-lab': {
-    title: 'Rectifier Lab',
-    category: 'Power Electronics',
-    summary: 'Controlled and uncontrolled 1-phase and 3-phase AC-to-DC converters.',
-    icon: <Cpu className="h-4 w-4" />,
-    badgeClass: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 dark:bg-emerald-500/20',
-  },
-  'dc-dc-converters': {
-    title: 'DC-DC Converters',
-    category: 'Switched-Mode Power',
-    summary: 'Buck, Boost, and Buck-Boost dynamics in CCM and DCM operating modes.',
-    icon: <Layers className="h-4 w-4" />,
-    badgeClass: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 dark:bg-indigo-500/20',
-  },
-  'emanimate': {
-    title: 'EMAnimate',
-    category: 'Electromagnetics',
-    summary: 'Plane wave propagation, polarization modes, and boundary reflections.',
-    icon: <Waves className="h-4 w-4" />,
-    badgeClass: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 dark:bg-rose-500/20',
-  },
-};
-
-const getAppIcon = (id: string) => {
-  return appMeta[id]?.icon || <Sparkles className="h-4 w-4" />;
-};
-
 export default function Teaching() {
-  const [selectedPreviewApp, setSelectedPreviewApp] = useState<PedagogicalApp | null>(null);
-
   return (
     <div className="w-full">
       
@@ -232,166 +179,29 @@ export default function Teaching() {
         </div>
       </section>
 
-      {/* 3. THIRD SECTION: Pedagogical Web Applications */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 space-y-8">
-        <SectionRibbon
-          icon={<Cpu className="h-5 w-5" />}
-          eyebrow="VIRTUAL SIMULATION & OPEN PEDAGOGY"
-          title="Pedagogical Web Applications"
-          description="In-browser interactive sandboxes developed by Dr. Arpan Hota to elucidate core physical and circuit principles"
-          badge={
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-1 rounded-full border border-emerald-500/30">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="font-semibold">5 Live Simulators</span>
-            </div>
-          }
-          accentColor="emerald"
-        />
-
-        {/* Lean & Aesthetic Application Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {pedagogicalApps.map((app, index) => {
-            const meta = appMeta[app.id] || {
-              title: app.shortTitle || app.title,
-              category: app.category,
-              summary: app.tagline || app.description,
-              icon: <Sparkles className="h-4 w-4" />,
-              badgeClass: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
-            };
-
-            return (
-              <motion.div
-                key={app.id}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.04, duration: 0.25 }}
-                className="flex flex-col"
-              >
-                <div className="h-full flex flex-col justify-between rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-slate-950 p-4 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all duration-200 group">
-                  <div className="space-y-3">
-                    {/* Top Row: App Icon & Domain Category */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className={`p-2 rounded-xl flex-shrink-0 transition-transform group-hover:scale-105 duration-200 ${meta.badgeClass}`}>
-                        {meta.icon}
-                      </div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 truncate">
-                        {meta.category}
-                      </span>
-                    </div>
-
-                    {/* App Title & Lean Single-Sentence Summary */}
-                    <div className="space-y-1">
-                      <h3 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-brand-secondary dark:group-hover:text-brand-accent transition-colors leading-snug">
-                        {meta.title}
-                      </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
-                        {meta.summary}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Clean Action Controls */}
-                  <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPreviewApp(app)}
-                      className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100/90 dark:bg-slate-900 hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-colors"
-                    >
-                      <Eye className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                      <span>Preview</span>
-                    </button>
-
-                    <a
-                      href={app.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-xs font-bold text-white dark:text-slate-950 bg-slate-900 dark:bg-slate-100 hover:bg-brand-secondary dark:hover:bg-brand-accent transition-colors shadow-xs"
-                    >
-                      <span>Launch</span>
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* 3. THIRD SECTION: Pedagogical Web Applications (Full Horizontal Screen Width) */}
+      <section className="w-full py-16 sm:py-20 lg:py-24 space-y-10 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-950/30">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
+          <SectionRibbon
+            icon={<Cpu className="h-5 w-5" />}
+            eyebrow="VIRTUAL SIMULATION & OPEN PEDAGOGY"
+            title="Pedagogical Web Applications"
+            description="In-browser interactive sandboxes developed by Dr. Arpan Hota to elucidate core physical and circuit principles"
+            badge={
+              <div className="flex items-center gap-2 text-xs font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-3 py-1.5 rounded-full border border-emerald-500/30">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-semibold">5 Live Simulators</span>
+              </div>
+            }
+            accentColor="emerald"
+          />
         </div>
 
-        {/* Live Embedded Workbench Area */}
-        <div className="pt-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <h3 className="font-serif font-bold text-lg sm:text-xl text-brand-primary dark:text-white">
-              Live In-Browser Simulation Workbench
-            </h3>
-            <span className="text-[11px] font-mono text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-              Interactive Execution
-            </span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-3xl">
-            Directly test the simulations below without leaving the page. Select any app from the strip to switch circuits.
-          </p>
-
+        {/* Live Embedded Workbench Area - Full Horizontal Span */}
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
           <InteractiveAppsShowcase />
         </div>
       </section>
-
-      {/* Quick Preview Modal for Individual Apps */}
-      <AnimatePresence>
-        {selectedPreviewApp && (
-          <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl"
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 bg-slate-900 border-b border-slate-800 text-white">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-brand-accent/20 text-brand-accent">
-                    {getAppIcon(selectedPreviewApp.id)}
-                  </div>
-                  <div>
-                    <h4 className="font-serif font-bold text-base text-white">
-                      {selectedPreviewApp.title}
-                    </h4>
-                    <p className="text-xs text-slate-400 font-mono">
-                      {selectedPreviewApp.category} · {selectedPreviewApp.url}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Button asChild size="sm" className="bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-xl text-xs">
-                    <a href={selectedPreviewApp.url} target="_blank" rel="noopener noreferrer">
-                      Open in New Tab <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
-                    </a>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedPreviewApp(null)}
-                    className="h-9 w-9 p-0 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"
-                  >
-                    <X className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Modal Iframe */}
-              <div className="flex-1 w-full bg-slate-900 relative">
-                <iframe
-                  src={selectedPreviewApp.url}
-                  title={selectedPreviewApp.title}
-                  className="w-full h-full border-0 bg-white"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                />
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </div>
   );
