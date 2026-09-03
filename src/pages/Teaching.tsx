@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { teaching } from '@/data/portfolio';
+import { teaching, pedagogicalApps } from '@/data/portfolio';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   BookOpen, 
@@ -191,7 +191,7 @@ export default function Teaching() {
             badge={
               <div className="flex items-center gap-2 text-xs font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-3 py-1.5 rounded-full border border-emerald-500/30">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span className="font-semibold">5 Live Simulators</span>
+                <span className="font-semibold">{pedagogicalApps.length} Live Simulators</span>
               </div>
             }
             accentColor="emerald"

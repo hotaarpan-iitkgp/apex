@@ -18,7 +18,9 @@ import {
   GraduationCap,
   Play,
   ArrowRight,
-  MoveHorizontal
+  MoveHorizontal,
+  Activity,
+  Gamepad2
 } from 'lucide-react';
 import { pedagogicalApps, PedagogicalApp } from '@/data/portfolio';
 import { Button } from '@/components/ui/button';
@@ -40,6 +42,10 @@ const getAppIcon = (id: string) => {
       return <Layers className="h-5 w-5" />;
     case 'emanimate':
       return <Waves className="h-5 w-5" />;
+    case 'inverter-lab':
+      return <Activity className="h-5 w-5" />;
+    case 'current-racer':
+      return <Gamepad2 className="h-5 w-5" />;
     default:
       return <Sparkles className="h-5 w-5" />;
   }
@@ -76,6 +82,18 @@ const getAccentColor = (id: string) => {
         badge: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30',
         glow: 'from-rose-500/20 to-transparent',
         dot: 'bg-rose-400',
+      };
+    case 'inverter-lab':
+      return {
+        badge: 'bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/30',
+        glow: 'from-violet-500/20 to-transparent',
+        dot: 'bg-violet-400',
+      };
+    case 'current-racer':
+      return {
+        badge: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/30',
+        glow: 'from-teal-500/20 to-transparent',
+        dot: 'bg-teal-400',
       };
     default:
       return {

@@ -805,6 +805,56 @@ export const pedagogicalApps: PedagogicalApp[] = [
     ],
     suggestedCourses: ["EE101", "Electromagnetic Fields & Waves", "Physics"],
     color: "from-purple-600 to-pink-700"
+  },
+  {
+    id: "inverter-lab",
+    title: "PowerSim — Interactive Inverter Visualizer & PWM Lab",
+    shortTitle: "Inverter Lab",
+    tagline: "Half-Bridge, H-Bridge VSI & CSI circuit schematics with real-time conduction and SPWM modulation",
+    url: "https://hotaarpan-iitkgp.github.io/Inverter-Lab/",
+    category: "Power Electronics & Inverters",
+    badge: "DC-AC Inverter Sim",
+    description: "An interactive power electronics inverter simulator featuring dynamic conduction path animations, Bipolar and Unipolar Sinusoidal Pulse-Width Modulation (SPWM) schemes, and synchronized multi-channel oscilloscope waveforms across Half-Bridge VSI, Full-Bridge (H-Bridge) VSI, and Current Source Inverters (CSI).",
+    concepts: [
+      "1-Phase Half-Bridge & Full-Bridge (H-Bridge) VSI Operation",
+      "Current Source Inverter (CSI) Commutation Dynamics",
+      "Bipolar vs. Unipolar Sinusoidal PWM (SPWM)",
+      "Modulation Index (ma) & Frequency Ratio (mf) Harmonics",
+      "Diode Freewheeling Paths & Dead-Time Effects"
+    ],
+    keyFeatures: [
+      "Live interactive schematic with animated current conduction paths",
+      "Seamless switching between Half-Bridge, H-Bridge, and CSI topologies",
+      "Adjustable carrier and reference modulation controls (ma, mf)",
+      "Synchronized multi-channel oscilloscope with gate pulses & output waveforms"
+    ],
+    suggestedCourses: ["EE31011 (Power Electronics)", "EE39006 (PE Lab)", "EE60208"],
+    color: "from-violet-600 to-indigo-700"
+  },
+  {
+    id: "current-racer",
+    title: "Current Racer — Interactive H-Bridge & VSI Current Control Game",
+    shortTitle: "Current Racer",
+    tagline: "Interactive gamified current tracking in 1-phase H-Bridge and 3-phase (120°) Voltage Source Inverters",
+    url: "https://hotaarpan-iitkgp.github.io/Current-Racer/",
+    category: "Power Electronics & Control",
+    badge: "Gamified VSI Control",
+    description: "A gamified interactive simulator to master Single-Phase H-Bridge and Three-Phase (120°) Voltage Source Inverter switching. Challenge your real-time timing to track reference current trajectories, observe antiparallel diode freewheeling, manage inductive energy in balanced RL loads, and score waveform accuracy.",
+    concepts: [
+      "H-Bridge Switching States & Current Slew Rates (di/dt)",
+      "Antiparallel Diode Freewheeling & Inductive Energy Trapping",
+      "3-Phase 120° Inverter Conduction Modes",
+      "Hysteresis & Bang-Bang Current Control Dynamics",
+      "Waveform Distortion & Trajectory Tracking Scoring"
+    ],
+    keyFeatures: [
+      "Interactive real-time switching control with keyboard and touch inputs",
+      "Dynamic trajectory tracking game mode with live accuracy scoring",
+      "Switchable 1-Phase H-Bridge and 3-Phase 120° VSI topology modes",
+      "Real-time oscilloscope tracking of target vs. actual load current"
+    ],
+    suggestedCourses: ["EE31011 (Power Electronics)", "EE39006 (PE Lab)", "Feedback Control Systems"],
+    color: "from-teal-600 to-emerald-700"
   }
 ];
 
