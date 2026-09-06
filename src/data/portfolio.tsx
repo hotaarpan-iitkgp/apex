@@ -18,12 +18,11 @@ import {
 } from 'lucide-react';
 import profilePhoto from '@/assets/Arpan_hota.png';
 import apexStripImg from '@/assets/APEX_strip.jpg';
-import apexRibonCutImg from '@/assets/APEX_ribon_cut.jpg';
-import apexRibonCut2Img from '@/assets/APEX_ribon_cut_2.jpg';
+import dabAcHwV1Img from '@/assets/DAB_AC_HW_v1.jpg';
+import dabAcHwV2Img from '@/assets/DAB_AC_HW_v2.jpg';
+import dabAcHwV3Img from '@/assets/DAB_AC_HW_v3.jpg';
 import aiPeImg from '@/assets/AI_PE.png';
 import multiportImg from '@/assets/multiport_multilevel.png';
-import dabV1Img from '@/assets/DAB_AC_HW_v1.jpg';
-import dabV2Img from '@/assets/DAB_AC_HW_v2.jpg';
 import pwmImg from '@/assets/PWM_techniques.png';
 import zcmvImg from '@/assets/ZCMV_photo.png';
 
@@ -88,7 +87,7 @@ export const flagshipFrontiers = [
     tagline: "Wide-Bandgap Ultra-Dense Power Densities",
     badge: "GaN/SiC Semiconductors",
     summary: "Designing sub-megahertz soft-switched (ZVS/ZCS) resonant converters, Dual Active Bridges (DAB), and integrated DC-DC-AC converters achieving unprecedented volumetric power density for electrified transport, data centers, and superchargers.",
-    image: dabV2Img,
+    image: dabAcHwV2Img,
     highlights: [
       "Wide-bandgap SiC & GaN gate drive optimization up to 500 kHz fsw",
       "Zero-Voltage-Switching (ZVS) bidirectional Dual Active Bridge (DAB) DC-DC stages",
@@ -211,19 +210,24 @@ export interface ApexLabImage {
 
 export const apexLabImages: ApexLabImage[] = [
   {
-    id: "apex-strip",
+    id: "dab-ac-hw-v1",
+    src: dabAcHwV1Img,
+    label: "3.6 kW DC-DC-AC Hardware Prototype Testbed"
+  },
+  {
+    id: "dab-ac-hw-v2",
+    src: dabAcHwV2Img,
+    label: "High-Frequency Dual Active Bridge Converter Prototype"
+  },
+  {
+    id: "dab-ac-hw-v3",
+    src: dabAcHwV3Img,
+    label: "Power Electronics Hardware Prototype Testing"
+  },
+  {
+    id: "apex-lab-facility",
     src: apexStripImg,
     label: "Cutting-Edge Power Electronics and Drives Laboratory"
-  },
-  {
-    id: "apex-ribon-cut",
-    src: apexRibonCutImg,
-    label: "APEX Lab Inauguration & Faculty Group"
-  },
-  {
-    id: "apex-ribon-cut-2",
-    src: apexRibonCut2Img,
-    label: "APEX Facility Ribbon Cutting Ceremony"
   }
 ];
 
@@ -282,7 +286,7 @@ export const researchAreas = [
     title: "Dual Active Bridge Converters",
     description: "High-efficiency isolated DC-DC converters for energy storage and smart grid applications.",
     icon: Cpu,
-    image: dabV1Img,
+    image: dabAcHwV1Img,
     contributions: [
       "Integrated H3/3 DAB converter for single-stage conversion.",
       "Voltage doubler interfacing for low voltage batteries."
