@@ -24,6 +24,7 @@ import FlagshipCarousel from '@/components/FlagshipCarousel';
 import SineWaveBackground from '@/components/SineWaveBackground';
 import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
 import ApexLabRibbon from '@/components/ApexLabRibbon';
+import dabAcHwV3 from '@/assets/DAB_AC_HW_v3.jpg';
 
 export default function Home() {
   return (
@@ -244,7 +245,7 @@ export default function Home() {
             {/* Hardware Testbed Gallery Column */}
             <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl min-h-[340px]">
               <img 
-                src="/DAB_AC_HW_v3.jpg" 
+                src={dabAcHwV3} 
                 alt="APEX Lab Power Electronics Hardware Prototype" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
