@@ -23,6 +23,7 @@ import { Link } from 'react-router-dom';
 import FlagshipCarousel from '@/components/FlagshipCarousel';
 import SineWaveBackground from '@/components/SineWaveBackground';
 import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
+import ApexLabRibbon from '@/components/ApexLabRibbon';
 
 export default function Home() {
   return (
@@ -243,8 +244,8 @@ export default function Home() {
             {/* Hardware Testbed Gallery Column */}
             <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl min-h-[340px]">
               <img 
-                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=1200" 
-                alt="APEX Lab Power Electronics Hardware Bench" 
+                src="/DAB_AC_HW_v3.jpg" 
+                alt="APEX Lab Power Electronics Hardware Prototype" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -252,16 +253,21 @@ export default function Home() {
               
               <div className="absolute bottom-6 left-6 right-6 space-y-2 text-white">
                 <span className="text-xs font-bold text-brand-accent uppercase tracking-wider block">
-                  Hardware Testbed Capabilities
+                  Hardware Development and Testing
                 </span>
                 <div className="text-sm font-semibold text-slate-200">
-                  Typhoon HIL Real-Time Emulator & 100kW Wide-Bandgap Power Conversion Bench
+                  Hardware prototype of a 3.6kW DC-DC-AC converter.
                 </div>
               </div>
             </div>
 
           </div>
 
+        </div>
+
+        {/* Full-Width Panoramic APEX Laboratory Feature Ribbon */}
+        <div className="w-full relative z-10 pt-16">
+          <ApexLabRibbon />
         </div>
       </section>
 

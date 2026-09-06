@@ -17,6 +17,9 @@ import {
   Grid
 } from 'lucide-react';
 import profilePhoto from '@/assets/Arpan_hota.png';
+import apexStripImg from '@/assets/APEX_strip.jpg';
+import apexRibonCutImg from '@/assets/APEX_ribon_cut.jpg';
+import apexRibonCut2Img from '@/assets/APEX_ribon_cut_2.jpg';
 
 export const profile = {
   name: "Arpan Hota",
@@ -49,7 +52,7 @@ export const flagshipFrontiers = [
     tagline: "Autonomous Converter Engineering & Neural Surrogates",
     badge: "AI & Physics Integration",
     summary: "Leveraging machine learning models and AI agents, for accelerating converter design cycles from months to hours, from weeks to seconds.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
+    image: "/AI_PE.png",
     highlights: [
       "Generative converter topology synthesis with automated switch reduction",
       "Agentic AI approach to Simulation and Design for power converters",
@@ -64,7 +67,7 @@ export const flagshipFrontiers = [
     tagline: "Integrated Multi-Source Energy Architectures",
     badge: "Renewable & EV Microgrids",
     summary: "Developing novel compact multi-input multi-output multilevel inverter topologies that integrate solar PV, battery storage, and fuel cells with reduced switch counts, self-voltage balancing, and ultra-high power conversion efficiency.",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1200",
+    image: "/multiport_multilevel.png",
     highlights: [
       "Reduced component count multilevel inverter modules",
       "Single-stage multi-port bidirectional energy routing between PV, Battery & Grid",
@@ -79,7 +82,7 @@ export const flagshipFrontiers = [
     tagline: "Wide-Bandgap Ultra-Dense Power Densities",
     badge: "GaN/SiC Semiconductors",
     summary: "Designing sub-megahertz soft-switched (ZVS/ZCS) resonant converters, Dual Active Bridges (DAB), and integrated DC-DC-AC converters achieving unprecedented volumetric power density for electrified transport, data centers, and superchargers.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200",
+    image: "/DAB_AC_HW_v2.jpg",
     highlights: [
       "Wide-bandgap SiC & GaN gate drive optimization up to 500 kHz fsw",
       "Zero-Voltage-Switching (ZVS) bidirectional Dual Active Bridge (DAB) DC-DC stages",
@@ -94,7 +97,7 @@ export const flagshipFrontiers = [
     tagline: "Mitigating Bearing Currents & Leakage in EV & Solar PV",
     badge: "EMI & Motor Reliability",
     summary: "Creating advanced vector modulation and inverter topologies that completely eliminate or minimize Common Mode Voltage (CMV), preventing premature bearing failures in high-speed EV traction motors and eliminating leakage currents in transformerless PV grids.",
-    image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=1200",
+    image: "/ZCMV_photo.png",
     highlights: [
       "H8/ANPC Zero-CMV inverter topologies for high-speed EV powertrain traction",
       "Complete suppression of bearing capacitive currents and shaft voltage stress",
@@ -109,7 +112,7 @@ export const flagshipFrontiers = [
     tagline: "Harmonic Elimination & Real-Time DSP Pulse Control",
     badge: "DSP & Predictive Control",
     summary: "Pioneering space vector modulation (SVM), selective harmonic elimination (SHE-PWM), and model predictive control (MPC) algorithms implemented on TMS320F28379D DSP & FPGA platforms for ultra-low distortion power conversion.",
-    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=1200",
+    image: "/PWM_techniques.png",
     highlights: [
       "Sub-microsecond FPGA pulse generation with minimal dead-time distortion",
       "Selective harmonic elimination (SHE-PWM) up to 49th order harmonics",
@@ -194,12 +197,36 @@ export const apexLab = {
   }
 };
 
+export interface ApexLabImage {
+  id: string;
+  src: string;
+  label: string;
+}
+
+export const apexLabImages: ApexLabImage[] = [
+  {
+    id: "apex-strip",
+    src: apexStripImg,
+    label: "Cutting-Edge Power Electronics and Drives Laboratory"
+  },
+  {
+    id: "apex-ribon-cut",
+    src: apexRibonCutImg,
+    label: "APEX Lab Inauguration & Faculty Group"
+  },
+  {
+    id: "apex-ribon-cut-2",
+    src: apexRibonCut2Img,
+    label: "APEX Facility Ribbon Cutting Ceremony"
+  }
+];
+
 export const researchAreas = [
   {
     title: "AI-Based Power Electronics Design & Simulation",
     description: "Automated converter topology synthesis, neural network surrogate models for thermal & magnetic loss, and AI-driven optimal PWM generation.",
     icon: Cpu,
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
+    image: "/AI_PE.png",
     contributions: [
       "Generative topology synthesis for reduced component count converters.",
       "Fast neural surrogate modeling replacing computationally heavy FEA simulations."
@@ -209,7 +236,7 @@ export const researchAreas = [
     title: "Multilevel Inverter Topologies",
     description: "Development of novel multilevel inverter configurations for medium voltage drives and grid integration.",
     icon: Grid,
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1200",
+    image: "/multiport_multilevel.png",
     contributions: [
       "Developed H8, H10, and T-Structured inverter topologies.",
       "Reduced switch count configurations for cost-effective solutions."
@@ -219,7 +246,7 @@ export const researchAreas = [
     title: "PWM and Modulation Techniques",
     description: "Advanced modulation strategies to improve power quality and efficiency.",
     icon: Zap,
-    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=1200",
+    image: "/PWM_techniques.png",
     contributions: [
       "Optimized PWM for common mode voltage elimination.",
       "Predictive control strategies for voltage source inverters."
@@ -229,7 +256,7 @@ export const researchAreas = [
     title: "Common Mode Voltage Elimination",
     description: "Techniques to mitigate common mode voltage in inverter-fed drives to enhance reliability.",
     icon: ActivityIcon,
-    image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=1200",
+    image: "/ZCMV_photo.png",
     contributions: [
       "Zero common mode voltage topologies.",
       "Reduced dv/dt and peak-to-peak CMV."
@@ -249,7 +276,7 @@ export const researchAreas = [
     title: "Dual Active Bridge Converters",
     description: "High-efficiency isolated DC-DC converters for energy storage and smart grid applications.",
     icon: Cpu,
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200",
+    image: "/DAB_AC_HW_v1.jpg",
     contributions: [
       "Integrated H3/3 DAB converter for single-stage conversion.",
       "Voltage doubler interfacing for low voltage batteries."
