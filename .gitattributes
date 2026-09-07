@@ -1,0 +1,10 @@
+# Ensure media files are treated as binary to prevent git line-ending corruption (e.g. LF to CRLF)
+*.webm binary
+*.mp4 binary
+*.mov binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.webp binary

@@ -155,39 +155,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. Key Metrics Bar */}
-      <section className="py-12 bg-brand-primary dark:bg-slate-950 border-y border-brand-accent/30 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,102,204,0.15),transparent)] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center group">
-              <div className="text-3xl sm:text-5xl font-serif font-extrabold text-brand-accent mb-1 group-hover:scale-105 transition-transform duration-200">
-                {profile.stats.journalPapers}+
-              </div>
-              <div className="text-xs sm:text-sm text-slate-300 uppercase font-semibold tracking-widest">IEEE Journal Papers</div>
-            </div>
-            <div className="text-center group">
-              <div className="text-3xl sm:text-5xl font-serif font-extrabold text-brand-accent mb-1 group-hover:scale-105 transition-transform duration-200">
-                {profile.stats.confPapers}+
-              </div>
-              <div className="text-xs sm:text-sm text-slate-300 uppercase font-semibold tracking-widest">Conference Papers</div>
-            </div>
-            <div className="text-center group">
-              <div className="text-3xl sm:text-5xl font-serif font-extrabold text-brand-accent mb-1 group-hover:scale-105 transition-transform duration-200">
-                {profile.stats.patents}
-              </div>
-              <div className="text-xs sm:text-sm text-slate-300 uppercase font-semibold tracking-widest">Patents Filed/Granted</div>
-            </div>
-            <div className="text-center group">
-              <div className="text-3xl sm:text-5xl font-serif font-extrabold text-brand-accent mb-1 group-hover:scale-105 transition-transform duration-200">
-                100 kW
-              </div>
-              <div className="text-xs sm:text-sm text-slate-300 uppercase font-semibold tracking-widest">Lab Traction Capacity</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* 3. Dedicated APEX Lab Showcase Section */}
       <section id="apex-lab" className="py-24 bg-slate-900 text-white relative overflow-hidden">
         {/* Background circuit glow */}
@@ -297,6 +264,44 @@ export default function Home() {
           {/* Animated Carousel Component */}
           <FlagshipCarousel />
 
+        </div>
+      </section>
+
+      {/* 4.5. Life at IIT Kharagpur - Video Background Section */}
+      <section className="relative h-[450px] sm:h-[550px] w-full flex items-center justify-center overflow-hidden">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/iitkgpvideo1.webm" type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        {/* Overlay Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-4"
+          >
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-brand-accent/20 border border-brand-accent/30 text-brand-accent text-xs font-mono uppercase tracking-[0.15em]">
+              Campus Experience
+            </span>
+            <h2 className="text-4xl sm:text-6xl font-serif font-extrabold text-white tracking-tight drop-shadow-md">
+              Life at IIT Kharagpur
+            </h2>
+            <p className="text-slate-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-serif italic">
+              "Yogah Karmasu Kausalam" — Excellence in action. Experience the vibrant academic, cultural, and residential life at India's first and largest Indian Institute of Technology.
+            </p>
+          </motion.div>
         </div>
       </section>
 

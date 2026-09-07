@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Building2, 
   MapPin, 
-  ArrowRight, 
   ChevronLeft, 
   ChevronRight, 
   Pause, 
@@ -13,9 +12,7 @@ import {
   Layers,
   Activity
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { apexLabImages } from '@/data/portfolio';
-import { Button } from '@/components/ui/button';
 
 interface Props {
   className?: string;
@@ -135,29 +132,6 @@ export default function ApexLabRibbon({ className = '', autoPlayInterval = 5500 
                 <Layers className="h-3 w-3 text-purple-400 flex-shrink-0" />
                 HIL Real-Time Emulation
               </span>
-            </div>
-
-            {/* Fixed CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Button 
-                asChild 
-                size="sm" 
-                className="h-8 px-4 text-xs bg-brand-primary hover:bg-brand-primary/90 text-white font-bold rounded-lg shadow-md transition-all"
-              >
-                <Link to="/projects">
-                  Explore Research Projects <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                </Link>
-              </Button>
-              <Button 
-                asChild 
-                variant="outline" 
-                size="sm" 
-                className="h-8 px-3.5 text-xs bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white border-slate-700/80 rounded-lg backdrop-blur-sm transition-all"
-              >
-                <Link to="/students">
-                  Meet Our Scholars
-                </Link>
-              </Button>
             </div>
 
           </div>
