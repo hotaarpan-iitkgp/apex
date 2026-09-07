@@ -278,7 +278,7 @@ export default function Home() {
             playsInline
             className="w-full h-full object-cover"
           >
-            <source src="/iitkgpvideo1.webm" type="video/webm" />
+            <source src={`${import.meta.env.BASE_URL}iitkgpvideo1.webm`} type="video/webm" />
             Your browser does not support the video tag.
           </video>
         </div>
