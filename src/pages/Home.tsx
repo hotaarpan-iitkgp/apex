@@ -379,46 +379,6 @@ export default function Home() {
 
         </div>
       </section>
-
-      {/* 6. Embedded Interactive Pedagogical Web Apps & Virtual Demonstrators (Horizontal Embed Area) */}
-      <section className="py-24 space-y-10 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white relative overflow-hidden border-t border-slate-800">
-        
-        {/* Ambient background glow & grid */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-brand-secondary/15 dark:bg-brand-accent/10 rounded-full blur-[160px] pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-40"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800 pb-8">
-            <div className="space-y-3 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/30 text-brand-accent text-xs font-mono font-bold uppercase tracking-wider">
-                <Sparkles className="h-3.5 w-3.5" />
-                Pedagogical Virtual Laboratories
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-white tracking-tight">
-                Interactive Concept Demonstrators
-              </h2>
-              <p className="text-slate-400 font-serif italic text-base sm:text-lg leading-relaxed">
-                Live, browser-based simulation sandboxes developed by Dr. Arpan Hota to elucidate complex concepts in power electronics, electrical machines, electromagnetics, and circuit analysis.
-              </p>
-            </div>
-
-            <Button asChild className="bg-brand-accent text-slate-950 hover:bg-brand-accent/90 font-bold px-6 py-6 rounded-xl shadow-lg transition-all flex-shrink-0">
-              <Link to="/teaching">
-                Explore Full Teaching Portfolio <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-
-        </div>
-
-        {/* Big Horizontal Embedded Area: Full-Width Ribbon + Centered Workbench Viewport */}
-        <div className="w-full relative z-10">
-          <InteractiveAppsShowcase />
-        </div>
-      </section>
-
     </div>
   );
 }
