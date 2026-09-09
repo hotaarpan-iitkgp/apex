@@ -149,7 +149,7 @@ export const apexLab = {
   tagline: "Pioneering Next-Generation Power Converters, Wide-Bandgap Semiconductor Applications, and AI-Driven Circuit Optimization",
   institution: "IIT Kharagpur",
   department: "Department of Electrical Engineering",
-  description: "The APEX Lab at IIT Kharagpur bridges cutting-edge power semiconductor physics, advanced digital control, and AI-driven automated converter design. We develop ultra-dense, highly efficient power conversion architectures for Electric Transportation, Smart Grids, and Industrial Automation.",
+  description: "The APEX Lab is set to become a premier hub for cutting-edge power conversion, driving 12 high-impact research projects supported by government and industry partners. Our team is tackling critical challenges across four key domains:",
   image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=1200",
   aiResearchImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
   testbenchImage: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=1200",
@@ -161,20 +161,20 @@ export const apexLab = {
   },
   capabilities: [
     {
-      title: "Wide-Bandgap (SiC/GaN) Testbed",
-      desc: "Double-pulse test setups and high-frequency gate drive characterization up to 500 kHz."
+      title: "High-Frequency Power Converter Design",
+      desc: "Achieving higher power density, efficiency, and optimized magnetics for next-gen conversion."
     },
     {
-      title: "Real-Time Hardware-in-the-Loop (HIL)",
-      desc: "Typhoon HIL and OPAL-RT real-time digital controllers for rapid power converter validation."
+      title: "Advanced Motor Drives & Control",
+      desc: "Enabling the next generation of electrified transportation, multiphase drives, and traction."
     },
     {
-      title: "AI Power Electronics Design Station",
-      desc: "GPU-accelerated workstation for generative topology synthesis and ML surrogate loss modeling."
+      title: "Multilevel Converters",
+      desc: "Revolutionizing high-power grid integration, multi-port topologies, and common-mode voltage reduction."
     },
     {
-      title: "EV Traction & Battery Emulator Bench",
-      desc: "100 kW dynamic load bank and active battery balancing test bench for electric motor drives."
+      title: "Battery Systems & Management",
+      desc: "Ensuring safety, active balancing, and extended operational longevity in energy storage systems."
     }
   ],
   aiResearchDetails: {

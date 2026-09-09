@@ -53,9 +53,9 @@ export default function ApexLabRibbon({ className = '', autoPlayInterval = 5500 
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Container: Full-width low-height panoramic banner */}
-      <div className="relative w-full min-h-[340px] sm:min-h-[360px] md:h-[380px] flex items-center">
+      <div className="relative w-full min-h-[420px] sm:min-h-[460px] md:h-[480px] flex items-center justify-center">
         
-        {/* Background Rotating Images - Much lighter overlay so images are clearly visible */}
+        {/* Background Rotating Images */}
         <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={activeImage.id}
@@ -68,77 +68,44 @@ export default function ApexLabRibbon({ className = '', autoPlayInterval = 5500 
             <img
               src={activeImage.src}
               alt={activeImage.label}
-              className="w-full h-full object-cover object-center filter brightness-100 contrast-100"
+              className="w-full h-full object-cover object-center filter brightness-90 contrast-100"
               referrerPolicy="no-referrer"
             />
 
-            {/* Light, refined overlays - NOT pitch black. The right half is left completely open for clear photo visibility */}
-            {/* Soft left-to-right gradient to ensure text readability on the left without obscuring the photo */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent lg:w-2/3 w-full" />
-            
-            {/* Subtle top & bottom edges to seamlessly blend with the dark page layout */}
-            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-slate-950/60 to-transparent pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
+            {/* Refined overlays for legibility of centered text */}
+            <div className="absolute inset-0 bg-slate-950/50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-transparent to-slate-950/80" />
           </motion.div>
         </AnimatePresence>
 
-        {/* Fixed Content Layer: Describes the APEX Lab, its mission and cutting-edge research */}
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-8">
-          <div className="max-w-2xl space-y-4">
-            
-            {/* Fixed Eyebrow Badges: Lab Title and Department Location */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wider border border-sky-500/40 bg-sky-950/70 text-sky-300 backdrop-blur-md shadow-sm">
-                <Building2 className="h-3.5 w-3.5 text-sky-400" />
-                ADVANCED POWER ELECTRONIX (APEX) LAB
-              </span>
+        {/* Centered Content Layer */}
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-4"
+          >
+            {/* Beautiful centered badge */}
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-[0.15em] border border-sky-500/30 bg-sky-950/70 text-sky-300 backdrop-blur-md shadow-sm">
+              <Building2 className="h-3.5 w-3.5 text-sky-400" />
+              ADVANCED POWER ELECTRONIX (APEX) LAB · IIT KHARAGPUR
+            </span>
 
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono text-slate-300 bg-slate-900/80 border border-slate-700/60 backdrop-blur-md">
-                <MapPin className="h-3 w-3 text-brand-accent flex-shrink-0" />
-                <span>Room N 210 · EE Dept, IIT Kharagpur</span>
-              </span>
-            </div>
+            {/* Headline */}
+            <h2 className="text-3xl sm:text-5xl font-serif font-extrabold text-white tracking-tight leading-tight drop-shadow-md max-w-3xl mx-auto">
+              Pioneering the Future of Power Conversion
+            </h2>
 
-            {/* Fixed Heading */}
-            <div className="space-y-1">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
-                Cutting-Edge Power Electronics & Drives Research
-              </h3>
-              <p className="text-xs sm:text-sm font-sans font-medium text-brand-accent tracking-wide drop-shadow">
-                Pioneering Next-Generation Wide-Bandgap Converters & Electrification Systems
-              </p>
-            </div>
-
-            {/* Fixed Description describing the APEX Lab */}
-            <p className="text-slate-200 text-xs sm:text-sm leading-relaxed max-w-xl font-normal drop-shadow">
-              At the APEX Laboratory, cutting-edge research in advanced power electronics and electric motor drives happens daily. Our team develops ultra-dense wide-bandgap (SiC & GaN) converter architectures, high-frequency planar magnetics, real-time hardware-in-the-loop (HIL) testbeds, and AI-accelerated digital twins for electric mobility, heavy traction, and clean renewable energy systems.
+            {/* Sub-line */}
+            <p className="text-slate-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-sans font-medium drop-shadow-md">
+              Bridging frontier power electronics research with real-world industrial scale.
             </p>
-
-            {/* Fixed Technical Pillars */}
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-mono text-slate-200 bg-slate-900/85 border border-slate-700/80 backdrop-blur-sm shadow-sm">
-                <Zap className="h-3 w-3 text-amber-400 flex-shrink-0" />
-                Wide-Bandgap (SiC / GaN)
-              </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-mono text-slate-200 bg-slate-900/85 border border-slate-700/80 backdrop-blur-sm shadow-sm">
-                <Cpu className="h-3 w-3 text-emerald-400 flex-shrink-0" />
-                EV Traction & Motor Drives
-              </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-mono text-slate-200 bg-slate-900/85 border border-slate-700/80 backdrop-blur-sm shadow-sm">
-                <Activity className="h-3 w-3 text-cyan-400 flex-shrink-0" />
-                100 kW Dynamic Testbeds
-              </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-mono text-slate-200 bg-slate-900/85 border border-slate-700/80 backdrop-blur-sm shadow-sm">
-                <Layers className="h-3 w-3 text-purple-400 flex-shrink-0" />
-                HIL Real-Time Emulation
-              </span>
-            </div>
-
-          </div>
+          </motion.div>
         </div>
 
-        {/* Minimal Navigation & Slide Controls (Bottom-Right, discrete) */}
-        <div className="absolute bottom-4 right-4 sm:right-8 z-30 flex items-center gap-2 bg-slate-950/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-700/60 shadow-xl">
+        {/* Minimal Navigation & Slide Controls (Bottom, Centered) */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-slate-950/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-700/60 shadow-xl">
           <button
             id="apex-ribbon-prev-btn"
             onClick={handlePrev}

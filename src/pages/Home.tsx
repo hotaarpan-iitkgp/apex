@@ -189,7 +189,7 @@ export default function Home() {
             <div className="lg:col-span-7 bg-slate-950/80 p-8 sm:p-10 rounded-3xl border border-slate-800/80 flex flex-col justify-between space-y-6 shadow-xl">
               <div className="space-y-4">
                 <h3 className="text-2xl font-serif font-bold text-white leading-snug">
-                  Mission & Hardware Infrastructure
+                  Research Focus & Future Innovation
                 </h3>
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                   {apexLab.description}
