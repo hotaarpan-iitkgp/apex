@@ -46,6 +46,8 @@ const getAppIcon = (id: string) => {
       return <Activity className="h-5 w-5" />;
     case 'current-racer':
       return <Gamepad2 className="h-5 w-5" />;
+    case 'traction-inverter':
+      return <Cpu className="h-5 w-5" />;
     default:
       return <Sparkles className="h-5 w-5" />;
   }
@@ -94,6 +96,12 @@ const getAccentColor = (id: string) => {
         badge: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
         glow: 'from-teal-500/20 to-transparent',
         dot: 'bg-teal-400',
+      };
+    case 'traction-inverter':
+      return {
+        badge: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+        glow: 'from-cyan-500/20 to-transparent',
+        dot: 'bg-cyan-400',
       };
     default:
       return {

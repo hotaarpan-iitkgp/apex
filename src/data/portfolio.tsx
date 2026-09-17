@@ -892,6 +892,30 @@ export const pedagogicalApps: PedagogicalApp[] = [
     ],
     suggestedCourses: ["EE31011 (Power Electronics)", "EE39006 (PE Lab)", "Feedback Control Systems"],
     color: "from-teal-600 to-emerald-700"
+  },
+  {
+    id: "traction-inverter",
+    title: "Traction Inverter Simulation & Space Vector Modulation (SVM) Lab",
+    shortTitle: "Traction Inverter",
+    tagline: "High-power 3-phase EV traction drive, Space Vector PWM (SVPWM) & field-oriented control (FOC) dynamics",
+    url: "https://hotaarpan-iitkgp.github.io/Tract_INV/",
+    category: "Electric Vehicles & Traction Drives",
+    badge: "SVPWM & EV Traction",
+    description: "An advanced, interactive simulation environment for visualizing 3-phase electric vehicle traction inverters. Explore Space Vector Modulation (SVPWM) sector selection, switching state vectors, duty cycle generation, and output phase voltage waveforms under dynamic EV load profiles.",
+    concepts: [
+      "Space Vector Pulse Width Modulation (SVPWM) Sector Dynamics",
+      "Voltage Source Inverter (VSI) Switching Vectors",
+      "Induction Motor & PMSM Traction Load Profiles",
+      "DC-Link Voltage Utilization & Overmodulation Limits"
+    ],
+    keyFeatures: [
+      "Dynamic hexagonal Space Vector plane mapping with real-time vector trajectory tracking",
+      "Interactive reference vector magnitude (ma) and angle (θ) controls",
+      "Fully animated 3-phase inverter leg switching states with current vector overlays",
+      "Dynamic phase-to-phase and phase-to-neutral voltage waveform plots"
+    ],
+    suggestedCourses: ["EE31011 (Power Electronics)", "EE60208", "Advanced Motor Drives"],
+    color: "from-sky-600 to-indigo-700"
   }
 ];
 

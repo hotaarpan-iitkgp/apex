@@ -58,26 +58,39 @@ export default function Contact() {
                     <div className="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl text-brand-secondary dark:text-brand-accent shadow-sm border border-slate-200/60 dark:border-slate-700 flex-shrink-0 mt-0.5">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <div>
-                      <h3 className="font-serif font-bold text-brand-primary dark:text-white text-base">
-                        Faculty Office & Lab Address
-                      </h3>
-                      <p className="text-slate-700 dark:text-slate-300 mt-1 text-sm sm:text-base leading-relaxed">
-                        Room N 210, APEX Laboratory<br />
-                        {profile.department}<br />
-                        <span className="font-semibold text-brand-primary dark:text-slate-200">{profile.institution}</span><br />
-                        {profile.location}, PIN - 721302
-                      </p>
+                    <div className="space-y-4 flex-1">
+                      <div>
+                        <h3 className="font-serif font-bold text-brand-primary dark:text-white text-base">
+                          Office Address
+                        </h3>
+                        <p className="text-slate-700 dark:text-slate-300 mt-1 text-sm sm:text-base leading-relaxed">
+                          Room N 207, Faculty Block<br />
+                          {profile.department}<br />
+                          <span className="font-semibold text-brand-primary dark:text-slate-200">{profile.institution}</span><br />
+                          {profile.location}, PIN - 721302
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <h3 className="font-serif font-bold text-brand-primary dark:text-white text-base">
+                          Laboratory Address
+                        </h3>
+                        <p className="text-slate-700 dark:text-slate-300 mt-1 text-sm sm:text-base leading-relaxed">
+                          Room N 210, APEX Laboratory<br />
+                          {profile.department}<br />
+                          <span className="font-semibold text-brand-primary dark:text-slate-200">{profile.institution}</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
 
                   <div className="pt-2">
                     <div className="rounded-xl bg-slate-50 dark:bg-slate-950/70 p-4 border border-slate-200/70 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
                       <p className="font-semibold text-slate-800 dark:text-slate-200">
-                        Visiting the Lab:
+                        Visiting Guidelines:
                       </p>
                       <p className="leading-relaxed">
-                        The Advanced Power Electronix (APEX) Laboratory is situated in Room N 210 within the Electrical Engineering Department building. Visitors and collaborators are requested to schedule appointments via email prior to arrival.
+                        Dr. Arpan Hota's faculty office is located in Room N 207, and the Advanced Power Electronix (APEX) Laboratory is located in Room N 210 within the Electrical Engineering Department building. Visitors are requested to schedule appointments via email prior to arrival.
                       </p>
                     </div>
                   </div>
