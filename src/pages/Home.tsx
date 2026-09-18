@@ -22,7 +22,6 @@ import { profile, researchAreas, apexLab } from '@/data/portfolio';
 import { Link } from 'react-router-dom';
 import FlagshipCarousel from '@/components/FlagshipCarousel';
 import SineWaveBackground from '@/components/SineWaveBackground';
-import InteractiveAppsShowcase from '@/components/InteractiveAppsShowcase';
 import ApexLabRibbon from '@/components/ApexLabRibbon';
 import dabAcHwV3 from '@/assets/DAB_AC_HW_v3.jpg';
 

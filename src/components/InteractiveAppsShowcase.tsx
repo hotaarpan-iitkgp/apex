@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect, type MouseEvent } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ExternalLink, 
   Maximize2, 
   Minimize2, 
   RotateCw, 
-  ChevronLeft, 
+  ChevronDown, 
   ChevronRight, 
   Cpu, 
   Zap, 
@@ -17,10 +17,17 @@ import {
   Info,
   GraduationCap,
   Play,
-  ArrowRight,
-  MoveHorizontal,
   Activity,
-  Gamepad2
+  Gamepad2,
+  Search,
+  Folder,
+  FolderOpen,
+  X,
+  BookOpen,
+  PanelLeftClose,
+  PanelLeft,
+  ChevronsUpDown,
+  Laptop
 } from 'lucide-react';
 import { pedagogicalApps, PedagogicalApp } from '@/data/portfolio';
 import { Button } from '@/components/ui/button';
@@ -30,176 +37,197 @@ interface Props {
   defaultAppId?: string;
 }
 
-const getAppIcon = (id: string) => {
+const getAppIcon = (id: string, className = "h-4 w-4") => {
   switch (id) {
     case 'power-factor':
-      return <Zap className="h-5 w-5" />;
+      return <Zap className={className} />;
     case 'vismmf':
-      return <Compass className="h-5 w-5" />;
+      return <Compass className={className} />;
     case 'rectifier-lab':
-      return <Cpu className="h-5 w-5" />;
+      return <Cpu className={className} />;
     case 'dc-dc-converters':
-      return <Layers className="h-5 w-5" />;
+      return <Layers className={className} />;
     case 'emanimate':
-      return <Waves className="h-5 w-5" />;
+      return <Waves className={className} />;
     case 'inverter-lab':
-      return <Activity className="h-5 w-5" />;
+      return <Activity className={className} />;
     case 'current-racer':
-      return <Gamepad2 className="h-5 w-5" />;
+      return <Gamepad2 className={className} />;
     case 'traction-inverter':
-      return <Cpu className="h-5 w-5" />;
+      return <Cpu className={className} />;
     default:
-      return <Sparkles className="h-5 w-5" />;
+      return <Sparkles className={className} />;
   }
 };
 
-const getAccentColor = (id: string) => {
-  switch (id) {
-    case 'power-factor':
-      return {
-        badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-        glow: 'from-amber-500/20 to-transparent',
-        dot: 'bg-amber-400',
-      };
-    case 'vismmf':
-      return {
-        badge: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
-        glow: 'from-sky-500/20 to-transparent',
-        dot: 'bg-sky-400',
-      };
-    case 'rectifier-lab':
-      return {
-        badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-        glow: 'from-emerald-500/20 to-transparent',
-        dot: 'bg-emerald-400',
-      };
-    case 'dc-dc-converters':
-      return {
-        badge: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
-        glow: 'from-indigo-500/20 to-transparent',
-        dot: 'bg-indigo-400',
-      };
-    case 'emanimate':
-      return {
-        badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-        glow: 'from-rose-500/20 to-transparent',
-        dot: 'bg-rose-400',
-      };
-    case 'inverter-lab':
-      return {
-        badge: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
-        glow: 'from-violet-500/20 to-transparent',
-        dot: 'bg-violet-400',
-      };
-    case 'current-racer':
-      return {
-        badge: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
-        glow: 'from-teal-500/20 to-transparent',
-        dot: 'bg-teal-400',
-      };
-    case 'traction-inverter':
-      return {
-        badge: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-        glow: 'from-cyan-500/20 to-transparent',
-        dot: 'bg-cyan-400',
-      };
-    default:
-      return {
-        badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-        glow: 'from-emerald-500/20 to-transparent',
-        dot: 'bg-emerald-400',
-      };
+const getCategoryBadgeStyle = (category: string) => {
+  const cat = category.toLowerCase();
+  if (cat.includes('power electronics') || cat.includes('smps') || cat.includes('inverters')) {
+    return {
+      badge: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+      activeText: 'text-emerald-400',
+      iconBg: 'bg-emerald-500/20 text-emerald-400',
+    };
   }
+  if (cat.includes('electric vehicle') || cat.includes('traction')) {
+    return {
+      badge: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
+      activeText: 'text-cyan-400',
+      iconBg: 'bg-cyan-500/20 text-cyan-400',
+    };
+  }
+  if (cat.includes('machine') || cat.includes('ac circuits') || cat.includes('power systems')) {
+    return {
+      badge: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+      activeText: 'text-amber-400',
+      iconBg: 'bg-amber-500/20 text-amber-400',
+    };
+  }
+  if (cat.includes('electromagnetic') || cat.includes('waves')) {
+    return {
+      badge: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+      activeText: 'text-indigo-400',
+      iconBg: 'bg-indigo-500/20 text-indigo-400',
+    };
+  }
+  return {
+    badge: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
+    activeText: 'text-sky-400',
+    iconBg: 'bg-sky-500/20 text-sky-400',
+  };
 };
 
 export default function InteractiveAppsShowcase({ className = '', defaultAppId }: Props) {
-  const [activeAppIndex, setActiveAppIndex] = useState(() => {
-    if (defaultAppId) {
-      const idx = pedagogicalApps.findIndex(a => a.id === defaultAppId);
-      return idx >= 0 ? idx : 0;
+  // Active selected application state
+  const [activeAppId, setActiveAppId] = useState<string>(() => {
+    if (defaultAppId && pedagogicalApps.some(a => a.id === defaultAppId)) {
+      return defaultAppId;
     }
-    return 0;
+    return pedagogicalApps[0]?.id || '';
   });
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [showInfo, setShowInfo] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const isDraggingRef = useRef(false);
-  const startXRef = useRef(0);
-  const scrollLeftRef = useRef(0);
-  const hasMovedRef = useRef(false);
+  // Derive unique categories from dataset
+  const categories = useMemo(() => {
+    const cats = Array.from(new Set(pedagogicalApps.map(app => app.category)));
+    return cats.sort();
+  }, []);
 
-  const activeApp: PedagogicalApp = pedagogicalApps[activeAppIndex];
-
-  // Center selected card smoothly in the ribbon viewport
-  const centerCard = (index: number) => {
-    const container = tabsContainerRef.current;
-    const card = cardRefs.current[index];
-    if (container && card) {
-      const containerWidth = container.offsetWidth;
-      const cardLeft = card.offsetLeft;
-      const cardWidth = card.offsetWidth;
-      const targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-      
-      container.scrollTo({
-        left: Math.max(0, targetScrollLeft),
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const handleSelectApp = (index: number) => {
-    if (index === activeAppIndex) {
-      centerCard(index);
-      return;
-    }
-    setIsLoading(true);
-    setActiveAppIndex(index);
-    setIframeKey(prev => prev + 1);
-    setTimeout(() => {
-      centerCard(index);
-    }, 40);
-  };
-
-  const scrollRibbon = (direction: 'left' | 'right') => {
-    const container = tabsContainerRef.current;
-    if (!container) return;
-    const scrollDelta = container.offsetWidth * 0.75;
-    container.scrollBy({
-      left: direction === 'left' ? -scrollDelta : scrollDelta,
-      behavior: 'smooth'
+  // Track expanded state for categories in the accordion
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    categories.forEach(cat => {
+      initial[cat] = true; // all expanded by default
     });
-  };
+    return initial;
+  });
 
-  // Mouse drag-to-scroll listeners
-  const handleMouseDown = (e: MouseEvent) => {
-    const container = tabsContainerRef.current;
-    if (!container) return;
-    isDraggingRef.current = true;
-    hasMovedRef.current = false;
-    startXRef.current = e.pageX - container.offsetLeft;
-    scrollLeftRef.current = container.scrollLeft;
-  };
+  // Current active app
+  const activeApp: PedagogicalApp = useMemo(() => {
+    return pedagogicalApps.find(a => a.id === activeAppId) || pedagogicalApps[0];
+  }, [activeAppId]);
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDraggingRef.current) return;
-    const container = tabsContainerRef.current;
-    if (!container) return;
-    e.preventDefault();
-    const x = e.pageX - container.offsetLeft;
-    const walk = (x - startXRef.current) * 1.3;
-    if (Math.abs(walk) > 6) {
-      hasMovedRef.current = true;
+  // Expand the category containing the active app when active app changes
+  useEffect(() => {
+    if (activeApp?.category) {
+      setExpandedCategories(prev => ({
+        ...prev,
+        [activeApp.category]: true
+      }));
     }
-    container.scrollLeft = scrollLeftRef.current - walk;
+  }, [activeAppId, activeApp?.category]);
+
+  // Filter apps based on search query and category filter
+  const filteredApps = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    return pedagogicalApps.filter(app => {
+      const matchesCategory = selectedCategory === 'All' || app.category === selectedCategory;
+      if (!matchesCategory) return false;
+
+      if (!q) return true;
+      const matchTitle = app.title.toLowerCase().includes(q) || app.shortTitle.toLowerCase().includes(q);
+      const matchDesc = app.description.toLowerCase().includes(q) || app.tagline.toLowerCase().includes(q);
+      const matchCategory = app.category.toLowerCase().includes(q);
+      const matchConcepts = app.concepts.some(c => c.toLowerCase().includes(q));
+      const matchCourses = app.suggestedCourses.some(c => c.toLowerCase().includes(q));
+
+      return matchTitle || matchDesc || matchCategory || matchConcepts || matchCourses;
+    });
+  }, [searchQuery, selectedCategory]);
+
+  // Group filtered apps by category
+  const groupedApps = useMemo(() => {
+    const map = new Map<string, PedagogicalApp[]>();
+    
+    // Maintain category ordering
+    categories.forEach(cat => {
+      map.set(cat, []);
+    });
+
+    filteredApps.forEach(app => {
+      if (!map.has(app.category)) {
+        map.set(app.category, []);
+      }
+      map.get(app.category)!.push(app);
+    });
+
+    // Remove categories with 0 filtered items
+    const result: { category: string; apps: PedagogicalApp[] }[] = [];
+    map.forEach((apps, category) => {
+      if (apps.length > 0) {
+        result.push({ category, apps });
+      }
+    });
+
+    return result;
+  }, [categories, filteredApps]);
+
+  // Auto-expand all matching categories when searching
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const allOpen: Record<string, boolean> = {};
+      groupedApps.forEach(g => {
+        allOpen[g.category] = true;
+      });
+      setExpandedCategories(prev => ({ ...prev, ...allOpen }));
+    }
+  }, [searchQuery, groupedApps]);
+
+  const toggleCategory = (cat: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [cat]: !prev[cat]
+    }));
   };
 
-  const handleMouseUpOrLeave = () => {
-    isDraggingRef.current = false;
+  const expandAll = () => {
+    const allOpen: Record<string, boolean> = {};
+    categories.forEach(cat => {
+      allOpen[cat] = true;
+    });
+    setExpandedCategories(allOpen);
+  };
+
+  const collapseAll = () => {
+    const allClosed: Record<string, boolean> = {};
+    categories.forEach(cat => {
+      allClosed[cat] = false;
+    });
+    setExpandedCategories(allClosed);
+  };
+
+  const handleSelectApp = (appId: string) => {
+    if (appId === activeAppId) return;
+    setIsLoading(true);
+    setActiveAppId(appId);
+    setIframeKey(prev => prev + 1);
   };
 
   const reloadIframe = () => {
@@ -207,417 +235,568 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
     setIframeKey(prev => prev + 1);
   };
 
-  // Center initial active card on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      centerCard(activeAppIndex);
-    }, 250);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full space-y-8 ${className}`}>
+    <div className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 ${className}`}>
       
-      {/* 1. Full Horizontal Screen Width Ribbon Card Bar */}
-      <div className="w-full bg-[#070b14] dark:bg-[#070b14] border-y border-slate-800/90 py-6 shadow-2xl space-y-4 relative overflow-hidden">
-        
-        {/* Subtle sleek top & bottom accent glow lines */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
-
-        {/* Ambient subtle backdrop radial glow */}
-        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 w-3/4 h-32 bg-radial from-sky-900/15 via-transparent to-transparent blur-2xl" />
-
-        {/* Ribbon Header: Spanning across the full screen width with side padding */}
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800/80 relative z-10">
+      {/* Top Header & Search Bar Suite */}
+      <div className="bg-slate-900/90 dark:bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl backdrop-blur-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          {/* Section Summary */}
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
               </span>
-              <h3 className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-slate-100">
-                Interactive Pedagogical Tool Scroller
+              <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-100">
+                Interactive Virtual Laboratories & Pedagogical Suite
               </h3>
               <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
-                Active: {activeApp.shortTitle || activeApp.title} ({activeAppIndex + 1} of {pedagogicalApps.length})
+                {pedagogicalApps.length} Live Sandboxes
               </span>
             </div>
-            <p className="text-xs text-slate-400 flex items-center gap-1.5 font-serif italic">
-              <MoveHorizontal className="h-3.5 w-3.5 text-slate-400 inline" />
-              Scroll or drag horizontally. Click any tool tile to bring it into center focus and launch in the workbench below.
+            <p className="text-xs text-slate-400 font-serif italic">
+              Select any simulator from the categorized library on the left to launch immediately in the high-fidelity workbench.
             </p>
           </div>
 
-          {/* Left / Right Ribbon Glide Controls */}
-          <div className="flex items-center gap-2 self-end sm:self-center">
-            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider hidden md:inline">
-              Slide Scroller:
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => scrollRibbon('left')}
-              className="h-9 w-9 p-0 rounded-xl border-slate-700/80 bg-slate-800/80 hover:bg-slate-700/90 text-slate-200 hover:text-white shadow-xs transition-all duration-200 active:scale-95 cursor-pointer"
-              title="Slide Scroller Left"
-            >
-              <ChevronLeft className="h-4 w-4 text-slate-200" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => scrollRibbon('right')}
-              className="h-9 w-9 p-0 rounded-xl border-slate-700/80 bg-slate-800/80 hover:bg-slate-700/90 text-slate-200 hover:text-white shadow-xs transition-all duration-200 active:scale-95 cursor-pointer"
-              title="Slide Scroller Right"
-            >
-              <ChevronRight className="h-4 w-4 text-slate-200" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Edge-to-Edge Horizontally Scrolling Tiles Track */}
-        <div className="relative w-full">
-          
-          {/* Visual gradient edge fades to indicate horizontal depth */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-[#070b14] to-transparent z-10 hidden sm:block" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#070b14] to-transparent z-10 hidden sm:block" />
-
-          {/* Horizontal Track with drag-to-scroll and full horizontal space occupancy */}
-          <div 
-            ref={tabsContainerRef}
-            tabIndex={0}
-            aria-label="Pedagogical Applications Horizontal Scroller"
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUpOrLeave}
-            onMouseLeave={handleMouseUpOrLeave}
-            className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto py-3 px-4 sm:px-8 lg:px-12 xl:px-16 no-scrollbar scroll-smooth snap-x snap-mandatory focus:outline-none cursor-grab active:cursor-grabbing select-none"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {pedagogicalApps.map((app, idx) => {
-              const isSelected = idx === activeAppIndex;
-              const accent = getAccentColor(app.id);
-
-              return (
+          {/* Quick Search & Filter Toolbar */}
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="relative flex-1 md:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search topic, course, circuit..."
+                className="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-slate-950/90 border border-slate-700/80 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
+              />
+              {searchQuery && (
                 <button
-                  key={app.id}
-                  ref={el => (cardRefs.current[idx] = el)}
-                  type="button"
-                  onClick={() => {
-                    if (!hasMovedRef.current) {
-                      handleSelectApp(idx);
-                    }
-                  }}
-                  className={`flex-shrink-0 text-left snap-center transition-all duration-300 rounded-2xl p-5 border flex flex-col justify-between gap-4 relative overflow-hidden group cursor-pointer w-[270px] sm:w-[300px] md:w-[320px] lg:w-[340px] ${
-                    isSelected 
-                      ? 'bg-gradient-to-b from-[#131e36] to-[#0a1122] text-white border-2 border-emerald-400 shadow-2xl shadow-emerald-500/20 ring-4 ring-emerald-400/20 scale-[1.02] z-10' 
-                      : 'bg-[#0e1526]/85 hover:bg-[#131d33] text-slate-300 border-slate-800/80 hover:border-slate-700 hover:shadow-xl hover:shadow-black/50 shadow-md backdrop-blur-sm'
-                  }`}
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5 rounded-full"
+                  title="Clear search"
                 >
-                  {/* Top Row: Icon, Category Badge & Sequence Index */}
-                  <div className="flex items-start justify-between gap-2.5 w-full">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className={`p-2.5 rounded-xl flex-shrink-0 transition-transform group-hover:scale-105 duration-200 ${
-                        isSelected 
-                          ? 'bg-emerald-400 text-slate-950 shadow-md font-bold' 
-                          : 'bg-slate-800/90 text-slate-300 group-hover:bg-slate-700/90 group-hover:text-white border border-slate-700/40'
-                      }`}>
-                        {getAppIcon(app.id)}
-                      </div>
-
-                      <div className="min-w-0">
-                        <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border inline-block max-w-full truncate ${
-                          isSelected 
-                            ? 'bg-emerald-400/15 text-emerald-300 border-emerald-400/40' 
-                            : accent.badge
-                        }`}>
-                          {app.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    <span className={`text-xs font-mono font-bold flex-shrink-0 ${
-                      isSelected ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-400'
-                    }`}>
-                      0{idx + 1}
-                    </span>
-                  </div>
-
-                  {/* Middle Content: Title and Generous Description */}
-                  <div className="space-y-1.5 w-full">
-                    <h4 className={`font-serif font-bold text-base sm:text-lg leading-snug ${
-                      isSelected ? 'text-white' : 'text-slate-100 group-hover:text-emerald-300 transition-colors'
-                    }`}>
-                      {app.shortTitle || app.title}
-                    </h4>
-                    <p className={`text-xs sm:text-[13px] leading-relaxed line-clamp-2 ${
-                      isSelected ? 'text-slate-200' : 'text-slate-400 group-hover:text-slate-300'
-                    }`}>
-                      {app.tagline || app.description}
-                    </p>
-                  </div>
-
-                  {/* Bottom Footer: Active Indicator or Action Prompt */}
-                  <div className={`pt-3 border-t flex items-center justify-between text-xs font-mono transition-colors ${
-                    isSelected 
-                      ? 'border-slate-700/80 text-emerald-400' 
-                      : 'border-slate-800/80 text-slate-400 group-hover:text-emerald-400'
-                  }`}>
-                    <div className="flex items-center gap-1.5 font-semibold">
-                      {isSelected ? (
-                        <>
-                          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                          <span>ACTIVE IN WORKBENCH</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="h-3 w-3 fill-current opacity-70" />
-                          <span>Click to Center</span>
-                        </>
-                      )}
-                    </div>
-
-                    <ArrowRight className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                      isSelected ? 'translate-x-0.5 text-emerald-400' : 'group-hover:translate-x-1 opacity-60 group-hover:opacity-100'
-                    }`} />
-                  </div>
+                  <X className="h-3 w-3" />
                 </button>
-              );
-            })}
+              )}
+            </div>
+
+            {/* Mobile Sidebar Toggle Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="lg:hidden h-9 px-3 rounded-xl border-slate-700 bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 text-xs gap-1.5"
+            >
+              {isSidebarOpen ? <PanelLeftClose className="h-3.5 w-3.5" /> : <PanelLeft className="h-3.5 w-3.5" />}
+              <span>{isSidebarOpen ? 'Hide Library' : 'Browse Labs'}</span>
+            </Button>
           </div>
+
         </div>
 
-        {/* Indicator Progress Dots for Quick Navigation */}
-        <div className="flex items-center justify-center gap-2 pt-1 relative z-10">
-          {pedagogicalApps.map((app, idx) => (
-            <button
-              key={`dot-${app.id}`}
-              type="button"
-              onClick={() => handleSelectApp(idx)}
-              aria-label={`Jump to ${app.shortTitle}`}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === activeAppIndex 
-                  ? 'w-8 bg-emerald-400 shadow-xs shadow-emerald-400/50' 
-                  : 'w-2 bg-slate-800 hover:bg-slate-700'
-              }`}
-            />
-          ))}
+        {/* Category Filter Chips Bar - Horizontal Scrolling */}
+        <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider flex-shrink-0 mr-1 flex items-center gap-1.5">
+            <Laptop className="h-3 w-3 text-emerald-400" /> Filter:
+          </span>
+          <button
+            onClick={() => setSelectedCategory('All')}
+            className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+              selectedCategory === 'All'
+                ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
+                : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+            }`}
+          >
+            All Disciplines ({pedagogicalApps.length})
+          </button>
+          {categories.map(cat => {
+            const count = pedagogicalApps.filter(a => a.category === cat).length;
+            const isSelected = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  isSelected
+                    ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
+                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+                }`}
+              >
+                {cat} ({count})
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* 2. Embedded Workbench Viewport - Kept in the middle like previous case */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300 ${
-          isFullscreen ? 'fixed inset-4 z-50 rounded-2xl flex flex-col' : 'w-full'
-        }`}>
+      {/* Main Master-Detail Layout: Left Categorized Sidebar + Right Interactive Workbench */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Browser Chrome Navigation Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md text-white text-xs z-20">
+        {/* Left Column: Categorized Collapsible Labs Playlist (4 cols on lg, 3.5 on xl) */}
+        <div className={`space-y-4 transition-all duration-300 ${
+          isSidebarOpen ? 'lg:col-span-4 xl:col-span-4 block' : 'hidden'
+        }`}>
           
-          {/* Window dots & App Identity */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
-              <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
-              <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-            </div>
-
-            <div className="h-4 w-px bg-slate-800 mx-1"></div>
-
-            <div className="flex items-center gap-2">
-              <div className="p-1 rounded-md bg-brand-accent/20 text-brand-accent">
-                {getAppIcon(activeApp.id)}
+          <div className="rounded-3xl border border-slate-800 bg-slate-950/90 shadow-2xl overflow-hidden flex flex-col max-h-[820px]">
+            
+            {/* Sidebar Header */}
+            <div className="px-5 py-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-emerald-400" />
+                <h4 className="font-serif font-bold text-sm text-white">
+                  Curriculum Simulators
+                </h4>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
+                  {filteredApps.length}
+                </span>
               </div>
-              <span className="font-serif font-bold text-white text-xs sm:text-sm truncate max-w-[200px] sm:max-w-md">
-                {activeApp.title}
-              </span>
-              <span className="hidden md:inline-block px-2.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent text-[10px] font-mono font-bold border border-brand-accent/30">
-                {activeApp.badge}
-              </span>
+
+              {/* Expand / Collapse All */}
+              <div className="flex items-center gap-1 text-[11px] font-mono">
+                <button
+                  onClick={expandAll}
+                  className="px-2 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  title="Expand All Categories"
+                >
+                  Expand
+                </button>
+                <span className="text-slate-600">/</span>
+                <button
+                  onClick={collapseAll}
+                  className="px-2 py-0.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  title="Collapse All Categories"
+                >
+                  Collapse
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* URL bar indicator & Actions */}
-          <div className="flex items-center gap-2">
-            {/* Live active URL indicator */}
-            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono text-[11px] max-w-sm truncate">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span className="truncate">{activeApp.url}</span>
+            {/* Scrollable Playlist of Categories */}
+            <div className="overflow-y-auto divide-y divide-slate-800/60 p-2 space-y-2.5 custom-scrollbar">
+              {groupedApps.length === 0 ? (
+                <div className="p-8 text-center space-y-2">
+                  <Search className="h-8 w-8 text-slate-600 mx-auto" />
+                  <p className="text-xs font-semibold text-slate-400">No matching simulators found</p>
+                  <p className="text-[11px] text-slate-400">Try adjusting your search query or reset the category filter.</p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+                    className="mt-2 text-xs border-slate-700 text-slate-300"
+                  >
+                    Reset Filters
+                  </Button>
+                </div>
+              ) : (
+                groupedApps.map(({ category, apps }) => {
+                  const isExpanded = !!expandedCategories[category];
+                  const style = getCategoryBadgeStyle(category);
+                  const activeInCat = apps.some(a => a.id === activeAppId);
+
+                  return (
+                    <div 
+                      key={category} 
+                      className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                        activeInCat 
+                          ? 'border-slate-700/90 bg-slate-900/60' 
+                          : 'border-slate-800/70 bg-slate-900/30 hover:border-slate-700/60'
+                      }`}
+                    >
+                      {/* Accordion Category Header */}
+                      <button
+                        onClick={() => toggleCategory(category)}
+                        className="w-full text-left px-3.5 py-2.5 flex items-center justify-between gap-2 hover:bg-slate-800/50 transition-colors group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          {isExpanded ? (
+                            <FolderOpen className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                          ) : (
+                            <Folder className="h-4 w-4 text-slate-400 group-hover:text-slate-300 flex-shrink-0" />
+                          )}
+                          <span className="font-serif font-bold text-xs sm:text-[13px] text-slate-200 group-hover:text-white truncate">
+                            {category}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${style.badge}`}>
+                            {apps.length}
+                          </span>
+                          {isExpanded ? (
+                            <ChevronDown className="h-3.5 w-3.5 text-slate-400 group-hover:text-white transition-transform" />
+                          ) : (
+                            <ChevronRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-white transition-transform" />
+                          )}
+                        </div>
+                      </button>
+
+                      {/* Accordion App Items */}
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="divide-y divide-slate-800/40 border-t border-slate-800/60 bg-slate-950/40"
+                          >
+                            {apps.map((app) => {
+                              const isCurrent = app.id === activeAppId;
+                              return (
+                                <div
+                                  key={app.id}
+                                  onClick={() => handleSelectApp(app.id)}
+                                  className={`p-3 sm:p-3.5 flex items-start gap-3 transition-all cursor-pointer group relative ${
+                                    isCurrent
+                                      ? 'bg-emerald-500/10 text-white border-l-4 border-l-emerald-400'
+                                      : 'hover:bg-slate-800/50 text-slate-300'
+                                  }`}
+                                >
+                                  {/* Icon Thumbnail */}
+                                  <div className={`p-2 rounded-xl flex-shrink-0 mt-0.5 transition-colors ${
+                                    isCurrent
+                                      ? 'bg-emerald-400 text-slate-950 shadow-md font-bold'
+                                      : 'bg-slate-800 text-slate-300 group-hover:bg-slate-700 group-hover:text-white'
+                                  }`}>
+                                    {getAppIcon(app.id, "h-4 w-4")}
+                                  </div>
+
+                                  {/* Text Meta */}
+                                  <div className="flex-1 min-w-0 space-y-1">
+                                    <div className="flex items-center justify-between gap-1.5">
+                                      <h5 className={`font-serif font-bold text-xs sm:text-[13px] leading-snug truncate ${
+                                        isCurrent ? 'text-white' : 'text-slate-200 group-hover:text-emerald-300'
+                                      }`}>
+                                        {app.shortTitle || app.title}
+                                      </h5>
+
+                                      {isCurrent ? (
+                                        <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 font-bold flex-shrink-0">
+                                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                          Active
+                                        </span>
+                                      ) : (
+                                        <Play className="h-3 w-3 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                                      )}
+                                    </div>
+
+                                    <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-sans">
+                                      {app.tagline || app.description}
+                                    </p>
+
+                                    <div className="flex items-center gap-2 pt-1">
+                                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                                        {app.badge}
+                                      </span>
+                                      {app.suggestedCourses[0] && (
+                                        <span className="text-[9px] font-mono text-slate-400 truncate">
+                                          {app.suggestedCourses[0]}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Quick Open in Tab external link */}
+                                  <a
+                                    href={app.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="p-1 rounded text-slate-500 hover:text-slate-200 hover:bg-slate-800 transition-colors flex-shrink-0"
+                                    title="Open directly in new tab"
+                                  >
+                                    <ExternalLink className="h-3 w-3" />
+                                  </a>
+                                </div>
+                              );
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })
+              )}
             </div>
 
-            {/* Action buttons */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={reloadIframe}
-              className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
-              title="Reload Simulation"
-            >
-              <RotateCw className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Reset</span>
-            </Button>
+            {/* Sidebar Footer */}
+            <div className="p-3 bg-slate-950 border-t border-slate-800 text-[10px] font-mono text-slate-400 text-center">
+              Scalable for 50+ Web Applications & Course Labs
+            </div>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowInfo(!showInfo)}
-              className={`h-8 px-2.5 rounded-lg text-xs gap-1.5 ${
-                showInfo ? 'bg-brand-accent text-slate-950 font-bold' : 'text-slate-300 hover:text-white hover:bg-slate-800'
-              }`}
-              title="Concept & Learning Information"
-            >
-              <Info className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Theory</span>
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
-              title={isFullscreen ? "Exit Fullscreen" : "Expand Fullscreen"}
-            >
-              {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-              <span className="hidden sm:inline">{isFullscreen ? 'Exit' : 'Expand'}</span>
-            </Button>
-
-            <Button
-              asChild
-              size="sm"
-              className="h-8 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-lg text-xs px-3 shadow-xs gap-1.5"
-            >
-              <a href={activeApp.url} target="_blank" rel="noopener noreferrer">
-                <span>Open in Tab</span>
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            </Button>
           </div>
 
         </div>
 
-        {/* Live Simulation IFrame Viewport */}
-        <div className={`relative w-full bg-slate-900 ${
-          isFullscreen ? 'flex-1 h-full' : 'h-[600px] sm:h-[680px] lg:h-[740px]'
+        {/* Right Column: Live Interactive Simulation Workbench (8 cols on lg, 8 on xl) */}
+        <div className={`space-y-4 ${
+          isSidebarOpen ? 'lg:col-span-8 xl:col-span-8' : 'lg:col-span-12'
         }`}>
           
-          {/* Loading Overlay */}
-          {isLoading && (
-            <div className="absolute inset-0 z-10 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center space-y-4 text-white">
-              <div className="relative">
-                <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-brand-accent animate-spin"></div>
-                <div className="absolute inset-0 flex items-center justify-center text-brand-accent">
-                  {getAppIcon(activeApp.id)}
-                </div>
-              </div>
-              <div className="text-center space-y-1">
-                <p className="font-serif font-bold text-base text-white">Loading {activeApp.shortTitle}...</p>
-                <p className="text-xs text-slate-400 font-mono">Connecting to live simulation</p>
-              </div>
-            </div>
-          )}
-
-          <iframe
-            key={`${activeApp.id}-${iframeKey}`}
-            src={activeApp.url}
-            title={activeApp.title}
-            className="w-full h-full border-0 bg-white"
-            onLoad={() => setIsLoading(false)}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-          />
-
-          {/* Collapsible Info/Theory Slide-Over Panel */}
-          <AnimatePresence>
-            {showInfo && (
-              <motion.div
-                initial={{ opacity: 0, x: 300 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 300 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-slate-950/95 border-l border-slate-800 text-white p-6 overflow-y-auto z-20 backdrop-blur-md shadow-2xl"
-              >
-                <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
-                  <div className="flex items-center gap-2 text-brand-accent">
-                    <GraduationCap className="h-5 w-5" />
-                    <h4 className="font-serif font-bold text-lg text-white">Curriculum & Theory</h4>
-                  </div>
-                  <button
-                    onClick={() => setShowInfo(false)}
-                    className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800 text-sm"
-                  >
-                    ✕
-                  </button>
+          <div className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300 ${
+            isFullscreen ? 'fixed inset-4 z-50 rounded-2xl flex flex-col' : 'w-full'
+          }`}>
+            
+            {/* Browser Chrome Navigation Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-slate-900/95 border-b border-slate-800 backdrop-blur-md text-white text-xs z-20">
+              
+              {/* Window dots & App Identity */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
                 </div>
 
-                <div className="space-y-6 text-xs text-slate-300">
-                  <div>
-                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-1.5">
-                      Pedagogical Objective
-                    </h5>
-                    <p className="leading-relaxed text-slate-300 font-sans">
-                      {activeApp.description}
-                    </p>
-                  </div>
+                <div className="h-4 w-px bg-slate-800 mx-1"></div>
 
-                  <div>
-                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
-                      Core Academic Concepts
-                    </h5>
-                    <ul className="space-y-2">
-                      {activeApp.concepts.map((c, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span>{c}</span>
-                        </li>
-                      ))}
-                    </ul>
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 flex-shrink-0">
+                    {getAppIcon(activeApp.id, "h-4 w-4")}
                   </div>
-
-                  <div>
-                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
-                      Interactive Capabilities
-                    </h5>
-                    <ul className="space-y-1.5">
-                      {activeApp.keyFeatures.map((f, i) => (
-                        <li key={i} className="flex items-start gap-2 text-slate-400">
-                          <span className="text-brand-accent">•</span>
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h5 className="font-mono uppercase tracking-wider text-[10px] text-brand-accent font-bold mb-2">
-                      Suggested IIT KGP Courses
-                    </h5>
-                    <div className="flex flex-wrap gap-1.5">
-                      {activeApp.suggestedCourses.map((c, i) => (
-                        <span key={i} className="px-2 py-0.5 bg-slate-800 text-slate-300 rounded font-mono text-[10px]">
-                          {c}
-                        </span>
-                      ))}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif font-bold text-white text-xs sm:text-sm truncate max-w-[180px] sm:max-w-md">
+                        {activeApp.title}
+                      </span>
+                      <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/30">
+                        {activeApp.badge}
+                      </span>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
 
-        {/* Bottom Status Bar */}
-        <div className="px-4 sm:px-6 py-2.5 bg-slate-900/90 border-t border-slate-800/80 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-300 font-bold">Interactive Controls:</span>
-            <span>Use sliders, parameter dials, and circuit selections directly inside the live viewport above.</span>
+              {/* URL bar indicator & Actions */}
+              <div className="flex items-center gap-2">
+                {/* Live active URL indicator */}
+                <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono text-[11px] max-w-xs truncate">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span className="truncate">{activeApp.url}</span>
+                </div>
+
+                {/* Action buttons */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={reloadIframe}
+                  className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
+                  title="Reload Simulation"
+                >
+                  <RotateCw className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Reset</span>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowInfo(!showInfo)}
+                  className={`h-8 px-2.5 rounded-lg text-xs gap-1.5 ${
+                    showInfo ? 'bg-emerald-400 text-slate-950 font-bold' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                  }`}
+                  title="Concept & Learning Information"
+                >
+                  <Info className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Theory</span>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsFullscreen(!isFullscreen)}
+                  className="h-8 px-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg text-xs gap-1.5"
+                  title={isFullscreen ? "Exit Fullscreen" : "Expand Fullscreen"}
+                >
+                  {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                  <span className="hidden sm:inline">{isFullscreen ? 'Exit' : 'Expand'}</span>
+                </Button>
+
+                <Button
+                  asChild
+                  size="sm"
+                  className="h-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs px-3 shadow-xs gap-1.5"
+                >
+                  <a href={activeApp.url} target="_blank" rel="noopener noreferrer">
+                    <span>Open in Tab</span>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                </Button>
+              </div>
+
+            </div>
+
+            {/* Live Simulation IFrame Viewport */}
+            <div className={`relative w-full bg-slate-900 ${
+              isFullscreen ? 'flex-1 h-full' : 'h-[640px] sm:h-[720px] lg:h-[780px]'
+            }`}>
+              
+              {/* Loading Overlay */}
+              {isLoading && (
+                <div className="absolute inset-0 z-10 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center space-y-4 text-white">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-emerald-400 animate-spin"></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-emerald-400">
+                      {getAppIcon(activeApp.id, "h-5 w-5")}
+                    </div>
+                  </div>
+                  <div className="text-center space-y-1">
+                    <p className="font-serif font-bold text-base text-white">Loading {activeApp.shortTitle}...</p>
+                    <p className="text-xs text-slate-400 font-mono">Connecting to live simulator</p>
+                  </div>
+                </div>
+              )}
+
+              <iframe
+                key={`${activeApp.id}-${iframeKey}`}
+                src={activeApp.url}
+                title={activeApp.title}
+                className="w-full h-full border-0 bg-white"
+                onLoad={() => setIsLoading(false)}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              />
+
+              {/* Collapsible Info/Theory Slide-Over Panel */}
+              <AnimatePresence>
+                {showInfo && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 300 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 300 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-slate-950/95 border-l border-slate-800 text-white p-6 overflow-y-auto z-20 backdrop-blur-md shadow-2xl"
+                  >
+                    <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
+                      <div className="flex items-center gap-2 text-emerald-400">
+                        <GraduationCap className="h-5 w-5" />
+                        <h4 className="font-serif font-bold text-lg text-white">Curriculum & Theory</h4>
+                      </div>
+                      <button
+                        onClick={() => setShowInfo(false)}
+                        className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800 text-sm"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <div className="space-y-6 text-xs text-slate-300">
+                      <div>
+                        <h5 className="font-mono uppercase tracking-wider text-[10px] text-emerald-400 font-bold mb-1.5">
+                          Pedagogical Objective
+                        </h5>
+                        <p className="leading-relaxed text-slate-300 font-sans">
+                          {activeApp.description}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h5 className="font-mono uppercase tracking-wider text-[10px] text-emerald-400 font-bold mb-2">
+                          Core Academic Concepts
+                        </h5>
+                        <ul className="space-y-2">
+                          {activeApp.concepts.map((c, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                              <span>{c}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h5 className="font-mono uppercase tracking-wider text-[10px] text-emerald-400 font-bold mb-2">
+                          Interactive Capabilities
+                        </h5>
+                        <ul className="space-y-1.5">
+                          {activeApp.keyFeatures.map((f, i) => (
+                            <li key={i} className="flex items-start gap-2 text-slate-400">
+                              <span className="text-emerald-400">•</span>
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h5 className="font-mono uppercase tracking-wider text-[10px] text-emerald-400 font-bold mb-2">
+                          Suggested IIT KGP Courses
+                        </h5>
+                        <div className="flex flex-wrap gap-1.5">
+                          {activeApp.suggestedCourses.map((c, i) => (
+                            <span key={i} className="px-2 py-0.5 bg-slate-800 text-slate-300 rounded font-mono text-[10px]">
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom Status Bar */}
+            <div className="px-4 sm:px-6 py-2.5 bg-slate-900/90 border-t border-slate-800/80 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-400 font-bold">Workbench Mode:</span>
+                <span>Direct real-time simulation with live parameter adjustment.</span>
+              </div>
+              <div className="text-slate-300">
+                Created by <strong className="text-white">Dr. Arpan Hota</strong> · IIT Kharagpur
+              </div>
+            </div>
+
           </div>
-          <div className="text-slate-300">
-            Developed by <strong className="text-white">Dr. Arpan Hota</strong> for pedagogical coursework
+
+          {/* Quick Context Card below workbench */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+                  {activeApp.category}
+                </span>
+                <span className="text-slate-600">·</span>
+                <span className="text-xs text-slate-400 font-mono">
+                  {activeApp.badge}
+                </span>
+              </div>
+              <h4 className="font-serif font-bold text-sm sm:text-base text-white">
+                {activeApp.title}
+              </h4>
+              <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+                {activeApp.tagline}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowInfo(true)}
+                className="text-xs border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200"
+              >
+                <Info className="h-3.5 w-3.5 mr-1 text-emerald-400" />
+                View Theory
+              </Button>
+              <Button
+                asChild
+                size="sm"
+                className="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
+              >
+                <a href={activeApp.url} target="_blank" rel="noopener noreferrer">
+                  Full Window
+                  <ExternalLink className="h-3 w-3 ml-1" />
+                </a>
+              </Button>
+            </div>
           </div>
+
         </div>
 
       </div>
-    </div>
 
     </div>
   );
