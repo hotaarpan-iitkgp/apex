@@ -753,7 +753,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "VisMMF Machine Tool",
     tagline: "Rotating magnetic field (RMF) evolution & spatial MMF distribution in AC machines",
     url: "https://hotaarpan-iitkgp.github.io/VisMMF/",
-    category: "Electrical Machines",
+    category: "Electrical Machines & Fields",
     badge: "RMF & Space Harmonics",
     description: "Designed to illustrate how discrete, distributed stator windings generate stepped MMF waveforms and synthesize a continuous rotating magnetic field (RMF) in synchronous and induction machines, highlighting fundamental and spatial harmonic distributions.",
     concepts: [
@@ -801,7 +801,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "DC-DC Converters",
     tagline: "Buck, Boost, and Buck-Boost switch-mode power conversion dynamics & CCM/DCM boundaries",
     url: "https://hotaarpan-iitkgp.github.io/DC-DC-Converters/",
-    category: "Power Electronics & SMPS",
+    category: "Power Electronics",
     badge: "Switched-Mode Sim",
     description: "An intuitive simulation sandbox exploring fundamental switch-mode DC-DC converters (Buck, Boost, Buck-Boost). Students can interactively modulate switching frequency, duty cycle, inductance, and capacitance to examine inductor volt-second balance and capacitor charge balance.",
     concepts: [
@@ -825,7 +825,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "EManimate Fields",
     tagline: "Interactive 2D/3D electromagnetic wave propagation, boundary conditions & field visualization",
     url: "https://hotaarpan-iitkgp.github.io/EManimate/",
-    category: "Electromagnetic Fields",
+    category: "Electrical Machines & Fields",
     badge: "Wave & Vector Fields",
     description: "An animated visualizer for electromagnetic theory, illustrating plane wave propagation, electric (E) and magnetic (H) field vector orthography, Poynting vectors, polarization types, and reflection/transmission across dielectric boundaries.",
     concepts: [
@@ -849,7 +849,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "Inverter Lab",
     tagline: "Half-Bridge, H-Bridge VSI & CSI circuit schematics with real-time conduction and SPWM modulation",
     url: "https://hotaarpan-iitkgp.github.io/Inverter-Lab/",
-    category: "Power Electronics & Inverters",
+    category: "Power Electronics",
     badge: "DC-AC Inverter Sim",
     description: "An interactive power electronics inverter simulator featuring dynamic conduction path animations, Bipolar and Unipolar Sinusoidal Pulse-Width Modulation (SPWM) schemes, and synchronized multi-channel oscilloscope waveforms across Half-Bridge VSI, Full-Bridge (H-Bridge) VSI, and Current Source Inverters (CSI).",
     concepts: [
@@ -874,7 +874,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "Current Racer",
     tagline: "Interactive gamified current tracking in 1-phase H-Bridge and 3-phase (120°) Voltage Source Inverters",
     url: "https://hotaarpan-iitkgp.github.io/Current-Racer/",
-    category: "Power Electronics & Control",
+    category: "Power Electronics",
     badge: "Gamified VSI Control",
     description: "A gamified interactive simulator to master Single-Phase H-Bridge and Three-Phase (120°) Voltage Source Inverter switching. Challenge your real-time timing to track reference current trajectories, observe antiparallel diode freewheeling, manage inductive energy in balanced RL loads, and score waveform accuracy.",
     concepts: [
@@ -899,7 +899,7 @@ export const pedagogicalApps: PedagogicalApp[] = [
     shortTitle: "Traction Inverter",
     tagline: "High-power 3-phase EV traction drive, Space Vector PWM (SVPWM) & field-oriented control (FOC) dynamics",
     url: "https://hotaarpan-iitkgp.github.io/Tract_INV/",
-    category: "Electric Vehicles & Traction Drives",
+    category: "Power Electronics",
     badge: "SVPWM & EV Traction",
     description: "An advanced, interactive simulation environment for visualizing 3-phase electric vehicle traction inverters. Explore Space Vector Modulation (SVPWM) sector selection, switching state vectors, duty cycle generation, and output phase voltage waveforms under dynamic EV load profiles.",
     concepts: [

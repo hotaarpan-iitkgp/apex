@@ -62,38 +62,31 @@ const getAppIcon = (id: string, className = "h-4 w-4") => {
 
 const getCategoryBadgeStyle = (category: string) => {
   const cat = category.toLowerCase();
-  if (cat.includes('power electronics') || cat.includes('smps') || cat.includes('inverters')) {
+  if (cat.includes('power electronics')) {
     return {
       badge: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
       activeText: 'text-emerald-400',
       iconBg: 'bg-emerald-500/20 text-emerald-400',
     };
   }
-  if (cat.includes('electric vehicle') || cat.includes('traction')) {
-    return {
-      badge: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
-      activeText: 'text-cyan-400',
-      iconBg: 'bg-cyan-500/20 text-cyan-400',
-    };
-  }
-  if (cat.includes('machine') || cat.includes('ac circuits') || cat.includes('power systems')) {
+  if (cat.includes('machine') || cat.includes('field')) {
     return {
       badge: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
       activeText: 'text-amber-400',
       iconBg: 'bg-amber-500/20 text-amber-400',
     };
   }
-  if (cat.includes('electromagnetic') || cat.includes('waves')) {
+  if (cat.includes('circuit') || cat.includes('power system') || cat.includes('ac')) {
     return {
-      badge: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
-      activeText: 'text-indigo-400',
-      iconBg: 'bg-indigo-500/20 text-indigo-400',
+      badge: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
+      activeText: 'text-sky-400',
+      iconBg: 'bg-sky-500/20 text-sky-400',
     };
   }
   return {
-    badge: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
-    activeText: 'text-sky-400',
-    iconBg: 'bg-sky-500/20 text-sky-400',
+    badge: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+    activeText: 'text-emerald-400',
+    iconBg: 'bg-emerald-500/20 text-emerald-400',
   };
 };
 
@@ -114,10 +107,22 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Derive unique categories from dataset
+  // Derive unique categories from dataset in preferred curricular order
   const categories = useMemo(() => {
-    const cats = Array.from(new Set(pedagogicalApps.map(app => app.category)));
-    return cats.sort();
+    const preferredOrder = [
+      "Power Electronics",
+      "Electrical Machines & Fields",
+      "AC Circuits & Power Systems"
+    ];
+    const presentCats = Array.from(new Set(pedagogicalApps.map(app => app.category)));
+    return presentCats.sort((a, b) => {
+      const idxA = preferredOrder.indexOf(a);
+      const idxB = preferredOrder.indexOf(b);
+      if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+      if (idxA !== -1) return -1;
+      if (idxB !== -1) return 1;
+      return a.localeCompare(b);
+    });
   }, []);
 
   // Track expanded state for categories in the accordion
@@ -412,7 +417,7 @@ export default function InteractiveAppsShowcase({ className = '', defaultAppId }
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           {isExpanded ? (
-                            <FolderOpen className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                            <FolderOpen className={`h-4 w-4 ${style.activeText} flex-shrink-0`} />
                           ) : (
                             <Folder className="h-4 w-4 text-slate-400 group-hover:text-slate-300 flex-shrink-0" />
                           )}
