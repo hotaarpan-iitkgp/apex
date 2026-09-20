@@ -916,6 +916,32 @@ export const pedagogicalApps: PedagogicalApp[] = [
     ],
     suggestedCourses: ["EE31011 (Power Electronics)", "EE60208", "Advanced Motor Drives"],
     color: "from-sky-600 to-indigo-700"
+  },
+  {
+    id: "two-level-vsi-pwm",
+    title: "Two-Level VSI Simulator & PWM Analyzer",
+    shortTitle: "2-Level VSI PWM",
+    tagline: "Carrier-based PWM modulation, offset injection (THIPWM, Min-Max SVPWM, DPWM) & 3-phase VSI dynamics",
+    url: "https://hotaarpan-iitkgp.github.io/2-Level-VSI-PWM/",
+    category: "Power Electronics",
+    badge: "3-Phase VSI & PWM",
+    description: "An interactive, high-precision virtual laboratory for 3-phase two-level Voltage Source Inverters (VSI). Explore carrier-based Sinusoidal PWM (SPWM), Third-Harmonic Injection (THIPWM), Min-Max offset injection (SVPWM equivalent), and Discontinuous PWM (DPWM-MAX, DPWM-MIN, 60° clamped DPWM1) with live circuit conduction paths and multi-channel oscilloscope waveforms.",
+    concepts: [
+      "Carrier-Based PWM & Triangular Carrier Comparison",
+      "Zero-Sequence / Offset Voltage Injection (v_offset)",
+      "Third-Harmonic (THIPWM) & Min-Max SVPWM Equivalence",
+      "Discontinuous PWM (DPWM1, Upper/Lower Clamping)",
+      "Pole, Line-to-Line & Phase Voltage Synthesis",
+      "DC Bus Utilization & 15.5% Linear Range Extension"
+    ],
+    keyFeatures: [
+      "Interactive 3-phase VSI schematic with real-time MOSFET/body diode conduction paths",
+      "6 PWM strategies: SPWM, THIPWM (1/6 3rd harmonic), Min-Max SVPWM, Upper Clamp, Lower Clamp, DPWM1",
+      "Synchronized multi-channel oscilloscope: carrier & mod references, gate pulses, pole, line & phase voltages",
+      "Dynamic harmonic spectrum & DC-link voltage utilization analysis"
+    ],
+    suggestedCourses: ["EE31011 (Power Electronics)", "EE60208", "EE39006 (PE Lab)"],
+    color: "from-indigo-600 to-cyan-700"
   }
 ];
 

@@ -55,6 +55,8 @@ const getAppIcon = (id: string, className = "h-4 w-4") => {
       return <Gamepad2 className={className} />;
     case 'traction-inverter':
       return <Cpu className={className} />;
+    case 'two-level-vsi-pwm':
+      return <Activity className={className} />;
     default:
       return <Sparkles className={className} />;
   }
